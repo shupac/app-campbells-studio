@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <base href="/">
+        <title>Campbell's Yoga</title>
+        <link rel="icon" type="image/x-icon" href="app/images/favicon.ico" />
+        <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+        <script src="app/bundle.js"></script>
+    </head>
+    <body ng-controller="appController">
+        <div class="container" id="container">
+            <app-nav ng-if="showNav"></app-nav>
+            <div ui-view></div>
+        </div>
+        <app-player ng-if="showPlayer"></app-player>
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<h1>Profile</h1>
+<md-button ng-click="edit()" ng-hide="editable" class="md-raised md-primary">Edit</md-button>
+<md-button ng-click="saveInfo()" class="md-raised md-primary" ng-show="editable" ng-disabled="!info.$valid">Save</md-button>
+<span class="saved" ng-show="saved">Saved!</span>
+
+<div layout="column" ng-cloak class="md-inline-form">
+  <md-content layout-padding>
+    <fieldset ng-disabled="!editable" ng-class="{editable: editable}">
+    <div>
+      <form name="userForm">
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>First name</label>
+            <input ng-model="userData.first">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Last name</label>
+            <input ng-model="userData.last">
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Address</label>
+          <input ng-model="userData.address.address1">
+        </md-input-container>
+
+        <md-input-container md-no-float class="md-block">
+          <input ng-model="userData.address.address2" placeholder="Address 2">
+        </md-input-container>
+
+        <div layout-gt-sm="row">
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>City</label>
+            <input ng-model="userData.city">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>State</label>
+            <md-select ng-model="userData.state" ng-disabled="!editable">
+              <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+                {{state.abbrev}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-sm>
+            <label>Postal Code</label>
+            <input name="postalCode" ng-model="userData.postalCode" placeholder="12345"
+                   required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+
+            <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
+              <div ng-message="required" class="my-message">You must supply a postal code.</div>
+              <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
+                code.
+              </div>
+            </div>
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Biography</label>
+          <textarea ng-model="userData.biography" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+        </md-input-container>
+        </fieldset>
+      </form>
+    </div>
+  </md-content>
+
+</div>
+
+<div class="profile">
+    <form name="info">
+    <table>
+    <colgroup>
+    <col style="width: 110px">
+    <col style="width: 200px">
+    </colgroup>
+        <tr>
+            <th>Birthdate</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.birthdate }}</span>
+                <input type="text" name="birthdate" ng-model="userData.personal.birthdate" ng-show="editable" placeholder="mm/dd/yyyy">
+            </td>
+        </tr>
+        <tr>
+            <th>Occupation</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.occupation }}</span>
+                <input type="text" name="occupation" ng-model="userData.personal.occupation" ng-show="editable">
+            </td>
+        </tr>
+        <tr>
+            <th>How did you hear about us?</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.referral }}</span>
+                <input type="text" name="referral" ng-model="userData.personal.referral" ng-show="editable">
+            </td>
+        </tr>
+        <tr>
+            <th>Yoga Background</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.background }}</span>
+                <input type="text" name="background" ng-model="userData.personal.background" ng-show="editable">
+            </td>
+        </tr>
+        <tr>
+            <th>How did you hear about us?</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.referral }}</span>
+                <input type="text" name="referral" ng-model="userData.personal.referral" ng-show="editable">
+            </td>
+        </tr>
+        <tr>
+            <th>Injuries/Medical History (Please be specific, touching on physical and mental aspects)</th>
+            <td>
+                <span ng-hide="editable">{{ userData.personal.conditions }}</span>
+                <textarea name="conditions" ng-model="userData.personal.conditions" ng-show="editable"></textarea>
+            </td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+
