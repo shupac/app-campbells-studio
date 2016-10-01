@@ -1,8 +1,10 @@
-function ProfileController($scope, $stateParams, $timeout, firebaseFactory) {
+function ProfileController($scope, $stateParams, $timeout, $mdDialog, firebaseFactory) {
     'ngInject'
 
+    var dataCopy;
+
     $scope.userId = $stateParams.userId;
-    $scope.user = {};
+    $scope.userData = {};
     $scope.editable = false;
     $scope.saved = false;
     $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' +
@@ -15,10 +17,12 @@ function ProfileController($scope, $stateParams, $timeout, firebaseFactory) {
         $scope.newUser = true;
         $scope.editable = true;
     } else {
+        $scope.startProgress();
         firebaseFactory.db.ref().child('users').child($scope.userId).once('value', function(snapshot) {
             console.log(snapshot.val());
             $scope.$apply(function() {
                 $scope.userData = snapshot.val();
+                $scope.stopProgress();
             });
         });
     }
@@ -31,12 +35,18 @@ function ProfileController($scope, $stateParams, $timeout, firebaseFactory) {
 
     $scope.edit = function() {
         $scope.editable = true;
+        dataCopy = angular.merge({}, $scope.userData);
     };
 
-    $scope.saveInfo = function() {
+    $scope.cancel = function() {
+        $scope.userData = dataCopy;
+        $scope.editable = false;
+    };
+
+    $scope.save = function() {
         $scope.editable = false;
         console.log($scope.userData);
-        if (confirm) firebaseFactory.db.ref().child('users').child($scope.userId)
+        firebaseFactory.db.ref().child('users').child($scope.userId)
             .set($scope.userData, function() {
                 $scope.showSaved();
             });

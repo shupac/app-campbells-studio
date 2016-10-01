@@ -1,22 +1,48 @@
-<h1>Profile</h1>
-<md-button ng-click="edit()" ng-hide="editable" class="md-raised md-primary">Edit</md-button>
-<md-button ng-click="saveInfo()" class="md-raised md-primary" ng-show="editable" ng-disabled="!info.$valid">Save</md-button>
-<span class="saved" ng-show="saved">Saved!</span>
+<md-toolbar id="profile">
+  <div class="md-toolbar-tools">
+    <md-button aria-label="Go Back">
+      Go Back
+    </md-button>
+    <span flex></span>
+    <div id="toolbar-buttons">
+      <md-button class="md-raised edit" ng-hide="editable" ng-click="edit()" >Edit</md-button>
+      <md-button class="md-hue-1 cancel" ng-show="editable" ng-click="cancel()">Cancel</md-button>
+      <md-button class="md-raised save" ng-show="editable" ng-click="save()">Save</md-button>
+    </div>
+  </div>
+</md-toolbar>
 
-<div layout="column" ng-cloak class="md-inline-form">
+<h2 id="title">
+  <div>Student Profile</div>
+</h2>
+
+<div layout="column" ng-cloak class="md-inline-form profile-container">
   <md-content layout-padding>
-    <fieldset ng-disabled="!editable" ng-class="{editable: editable}">
     <div>
-      <form name="userForm">
-        <div layout-gt-sm="row">
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>First name</label>
+      <form name="userForm"><fieldset ng-disabled="!editable" ng-class="{editable: editable}">
+        <div class="heading-container">
+          <h3>Contact Info</h3>
+        </div>
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>First Name</label>
             <input ng-model="userData.first">
           </md-input-container>
 
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>Last name</label>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Last Name</label>
             <input ng-model="userData.last">
+          </md-input-container>
+        </div>
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Email</label>
+            <input ng-model="userData.contact.email">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Phone Number</label>
+            <input ng-model="userData.contact.phone" placeholder="555-555-5555">
           </md-input-container>
         </div>
 
@@ -26,100 +52,87 @@
         </md-input-container>
 
         <md-input-container md-no-float class="md-block">
+          <label>Address 2</label>
           <input ng-model="userData.address.address2" placeholder="Address 2">
         </md-input-container>
 
-        <div layout-gt-sm="row">
-          <md-input-container class="md-block" flex-gt-sm>
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
             <label>City</label>
-            <input ng-model="userData.city">
+            <input ng-model="userData.address.city">
           </md-input-container>
 
-          <md-input-container class="md-block" flex-gt-sm>
+          <md-input-container class="md-block" flex-gt-xs>
             <label>State</label>
-            <md-select ng-model="userData.state" ng-disabled="!editable">
+            <md-select ng-model="userData.address.state" ng-disabled="!editable">
               <md-option ng-repeat="state in states" value="{{state.abbrev}}">
                 {{state.abbrev}}
               </md-option>
             </md-select>
+            <div class="md-errors-spacer"></div>
           </md-input-container>
 
-          <md-input-container class="md-block" flex-gt-sm>
-            <label>Postal Code</label>
-            <input name="postalCode" ng-model="userData.postalCode" placeholder="12345"
-                   required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Zip Code</label>
+            <input ng-model="userData.address.zip" placeholder="12345">
+          </md-input-container>
+        </div>
 
-            <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
-              <div ng-message="required" class="my-message">You must supply a postal code.</div>
-              <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
-                code.
-              </div>
-            </div>
+        <div class="heading-container">
+          <h3>Personal Info</h3>
+          <div id="confidentiality">All information provided will be kept confidential</div>
+        </div>
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Birthdate</label>
+            <input ng-model="userData.personal.birthdate" placeholder="01/30/1980">
+          </md-input-container>
+
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Occupation</label>
+            <input ng-model="userData.personal.occupation">
           </md-input-container>
         </div>
 
         <md-input-container class="md-block">
-          <label>Biography</label>
-          <textarea ng-model="userData.biography" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+          <label>Background</label>
+          <textarea ng-model="userData.personal.background" md-maxlength="300" rows="1" md-select-on-focus placeholder="yoga, athletics, movement, mindfulness, spiritual, etc."></textarea>
         </md-input-container>
-        </fieldset>
-      </form>
+
+        <md-input-container class="md-block">
+          <label>Intention</label>
+          <textarea ng-model="userData.personal.intention" md-maxlength="300" rows="1" md-select-on-focus placeholder="What is your intention with taking yoga classes?"></textarea>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Health History</label>
+          <textarea ng-model="userData.personal.health" rows="1" md-select-on-focus placeholder="Injuries and medical conditions (Please be specific regarding physical and mental aspects)"></textarea>
+        </md-input-container>
+
+        <div class="heading-container">
+          <h3>Join Our Community</h3>
+        </div>
+
+        <md-input-container class="md-block" flex-gt-xs>
+          <label>How did you hear about us?</label>
+          <input ng-model="userData.community.referral">
+        </md-input-container>
+
+        <md-checkbox ng-model="userData.community.mailing" ng-disabled="!editable" aria-label="mailing list" class="md-warn md-align-top-left" flex>Join our mailing list?<br/>
+            <span class="mailing-description">
+            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.
+            </span>
+        </md-checkbox>
+
+      </fieldset></form>
     </div>
   </md-content>
 
+  <div class="edit-buttons">
+      <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
+      <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
+      <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
+      <span class="saved" ng-show="saved">Saved!</span>
+  </div>
 </div>
-
-<div class="profile">
-    <form name="info">
-    <table>
-    <colgroup>
-    <col style="width: 110px">
-    <col style="width: 200px">
-    </colgroup>
-        <tr>
-            <th>Birthdate</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.birthdate }}</span>
-                <input type="text" name="birthdate" ng-model="userData.personal.birthdate" ng-show="editable" placeholder="mm/dd/yyyy">
-            </td>
-        </tr>
-        <tr>
-            <th>Occupation</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.occupation }}</span>
-                <input type="text" name="occupation" ng-model="userData.personal.occupation" ng-show="editable">
-            </td>
-        </tr>
-        <tr>
-            <th>How did you hear about us?</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.referral }}</span>
-                <input type="text" name="referral" ng-model="userData.personal.referral" ng-show="editable">
-            </td>
-        </tr>
-        <tr>
-            <th>Yoga Background</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.background }}</span>
-                <input type="text" name="background" ng-model="userData.personal.background" ng-show="editable">
-            </td>
-        </tr>
-        <tr>
-            <th>How did you hear about us?</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.referral }}</span>
-                <input type="text" name="referral" ng-model="userData.personal.referral" ng-show="editable">
-            </td>
-        </tr>
-        <tr>
-            <th>Injuries/Medical History (Please be specific, touching on physical and mental aspects)</th>
-            <td>
-                <span ng-hide="editable">{{ userData.personal.conditions }}</span>
-                <textarea name="conditions" ng-model="userData.personal.conditions" ng-show="editable"></textarea>
-            </td>
-        </tr>
-    </table>
-    </form>
-</div>
-
 
