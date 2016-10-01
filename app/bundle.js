@@ -73987,7 +73987,7 @@
 	        template: '<app-login></app-login>',
 	        data: { protect: false }
 	    }).state('profile', {
-	        url: '/profile',
+	        url: '/profile/:userId',
 	        params: {
 	            userId: null
 	        },
@@ -74011,8 +74011,8 @@
 	});
 	function run($rootScope, $state) {
 	    'ngInject';
-	    // $state.go('profile');
-	    $state.go('profile', { userId: 'shu' });
+	    $state.go('profile');
+	    // $state.go('profile', {userId: 'shu'});
 
 	    // $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
 	    //     // if (!loginFactory.getUser() && toState.data.protect) {
@@ -74031,11 +74031,11 @@
 
 	'use strict';
 
-	AppController.$inject = ["$scope", "$rootScope", "$state", "$document"];
+	AppController.$inject = ["$scope", "$rootScope", "$state"];
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	function AppController($scope, $rootScope, $state, $document) {
+	function AppController($scope, $rootScope, $state) {
 	    'ngInject';
 
 	    var keys = { 37: 1, 38: 1, 39: 1, 40: 1 };
@@ -74812,7 +74812,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  height: 100%;\n  margin: 0;\n}\nfieldset {\n  border: none;\n}\n#container {\n  text-align: center;\n  overflow: auto;\n}\n#progress {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 100;\n  background-color: rgba(0,0,0,0.3);\n  text-align: center;\n  padding-top: 25%;\n}\nmd-progress-circular {\n  margin: 0 auto;\n}\n", ""]);
+	exports.push([module.id, "body {\n  height: 100%;\n  margin: 0;\n}\nfieldset {\n  border: none;\n}\n#container {\n  text-align: center;\n}\n#progress {\n  position: fixed;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n  z-index: 100;\n  background-color: rgba(0,0,0,0.3);\n  text-align: center;\n  padding-top: 25%;\n}\nmd-progress-circular {\n  margin: 0 auto;\n}\n", ""]);
 
 	// exports
 
@@ -89718,7 +89718,7 @@
 /* 139 */
 /***/ function(module, exports) {
 
-	module.exports = "<md-toolbar id=\"profile\">\n  <div class=\"md-toolbar-tools\">\n    <md-button aria-label=\"Go Back\">\n      Go Back\n    </md-button>\n    <span flex></span>\n    <div id=\"toolbar-buttons\">\n      <md-button class=\"md-raised edit\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel()\">Cancel</md-button>\n      <md-button class=\"md-raised save\" ng-show=\"editable\" ng-click=\"save()\">Save</md-button>\n    </div>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Student Profile</div>\n</h2>\n\n<div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n  <md-content layout-padding>\n    <div>\n      <form name=\"userForm\"><fieldset ng-disabled=\"!editable\" ng-class=\"{editable: editable}\">\n        <div class=\"heading-container\">\n          <h3>Contact Info</h3>\n        </div>\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>First Name</label>\n            <input ng-model=\"userData.first\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Last Name</label>\n            <input ng-model=\"userData.last\">\n          </md-input-container>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Email</label>\n            <input ng-model=\"userData.contact.email\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Phone Number</label>\n            <input ng-model=\"userData.contact.phone\" placeholder=\"555-555-5555\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Address</label>\n          <input ng-model=\"userData.address.address1\">\n        </md-input-container>\n\n        <md-input-container md-no-float class=\"md-block\">\n          <label>Address 2</label>\n          <input ng-model=\"userData.address.address2\" placeholder=\"Address 2\">\n        </md-input-container>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>City</label>\n            <input ng-model=\"userData.address.city\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>State</label>\n            <md-select ng-model=\"userData.address.state\" ng-disabled=\"!editable\">\n              <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n                {{state.abbrev}}\n              </md-option>\n            </md-select>\n            <div class=\"md-errors-spacer\"></div>\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Zip Code</label>\n            <input ng-model=\"userData.address.zip\" placeholder=\"12345\">\n          </md-input-container>\n        </div>\n\n        <div class=\"heading-container\">\n          <h3>Personal Info</h3>\n          <div id=\"confidentiality\">All information provided will be kept confidential</div>\n        </div>\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Birthdate</label>\n            <input ng-model=\"userData.personal.birthdate\" placeholder=\"01/30/1980\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Occupation</label>\n            <input ng-model=\"userData.personal.occupation\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Background</label>\n          <textarea ng-model=\"userData.personal.background\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"yoga, athletics, movement, mindfulness, spiritual, etc.\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Intention</label>\n          <textarea ng-model=\"userData.personal.intention\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"What is your intention with taking yoga classes?\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Health History</label>\n          <textarea ng-model=\"userData.personal.health\" rows=\"1\" md-select-on-focus placeholder=\"Injuries and medical conditions (Please be specific regarding physical and mental aspects)\"></textarea>\n        </md-input-container>\n\n        <div class=\"heading-container\">\n          <h3>Join Our Community</h3>\n        </div>\n\n        <md-input-container class=\"md-block\" flex-gt-xs>\n          <label>How did you hear about us?</label>\n          <input ng-model=\"userData.community.referral\">\n        </md-input-container>\n\n        <md-checkbox ng-model=\"userData.community.mailing\" ng-disabled=\"!editable\" aria-label=\"mailing list\" class=\"md-warn md-align-top-left\" flex>Join our mailing list?<br/>\n            <span class=\"mailing-description\">\n            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.\n            </span>\n        </md-checkbox>\n\n      </fieldset></form>\n    </div>\n  </md-content>\n\n  <div class=\"edit-buttons\">\n      <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n      <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n      <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n  </div>\n</div>\n\n"
+	module.exports = "<md-toolbar id=\"profile\">\n  <div class=\"md-toolbar-tools\">\n    <md-button aria-label=\"Go Back\">\n      Go Back\n    </md-button>\n    <span flex></span>\n    <div id=\"toolbar-buttons\">\n      <md-button class=\"md-raised edit\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel()\">Cancel</md-button>\n      <md-button class=\"md-raised save\" ng-show=\"editable\" ng-click=\"save()\">Save</md-button>\n    </div>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Student Profile</div>\n</h2>\n\n<div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n  <md-content layout-padding>\n    <div>\n      <form name=\"userForm\"><fieldset ng-disabled=\"!editable\">\n        <div class=\"heading-container\">\n          <h3>Contact Info</h3>\n        </div>\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>First Name</label>\n            <input ng-model=\"userData.first\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Last Name</label>\n            <input ng-model=\"userData.last\">\n          </md-input-container>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Email</label>\n            <input ng-model=\"userData.contact.email\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Phone Number</label>\n            <input ng-model=\"userData.contact.phone\" placeholder=\"555-555-5555\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Address</label>\n          <input ng-model=\"userData.address.address1\">\n        </md-input-container>\n\n        <md-input-container md-no-float class=\"md-block\">\n          <label>Address 2</label>\n          <input ng-model=\"userData.address.address2\" placeholder=\"Address 2\">\n        </md-input-container>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>City</label>\n            <input ng-model=\"userData.address.city\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>State</label>\n            <md-select ng-model=\"userData.address.state\" ng-disabled=\"!editable\">\n              <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n                {{state.abbrev}}\n              </md-option>\n            </md-select>\n            <div class=\"md-errors-spacer\"></div>\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Zip Code</label>\n            <input ng-model=\"userData.address.zip\" placeholder=\"12345\">\n          </md-input-container>\n        </div>\n\n        <div class=\"heading-container\">\n          <h3>Personal Info</h3>\n          <div id=\"confidentiality\">All information provided will be kept confidential</div>\n        </div>\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Birthdate</label>\n            <input ng-model=\"userData.personal.birthdate\" placeholder=\"01/30/1980\">\n          </md-input-container>\n\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Occupation</label>\n            <input ng-model=\"userData.personal.occupation\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Background</label>\n          <textarea ng-model=\"userData.personal.background\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"yoga, athletics, movement, mindfulness, spiritual, etc.\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Intention</label>\n          <textarea ng-model=\"userData.personal.intention\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"What is your intention with taking yoga classes?\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Health History</label>\n          <textarea ng-model=\"userData.personal.health\" rows=\"1\" md-select-on-focus placeholder=\"Injuries and medical conditions (Please be specific regarding physical and mental aspects)\"></textarea>\n        </md-input-container>\n\n        <div class=\"heading-container\">\n          <h3>Join Our Community</h3>\n        </div>\n\n        <md-input-container class=\"md-block\" flex-gt-xs>\n          <label>How did you hear about us?</label>\n          <input ng-model=\"userData.community.referral\">\n        </md-input-container>\n\n        <md-checkbox ng-model=\"userData.community.mailing\" ng-disabled=\"!editable\" aria-label=\"mailing list\" class=\"md-warn md-align-top-left\" flex>Join our mailing list?<br/>\n            <span class=\"mailing-description\">\n            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.\n            </span>\n        </md-checkbox>\n\n      </fieldset></form>\n    </div>\n  </md-content>\n\n  <div class=\"edit-buttons\">\n      <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n      <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n      <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n  </div>\n</div>\n\n"
 
 /***/ },
 /* 140 */
@@ -89726,11 +89726,11 @@
 
 	'use strict';
 
-	ProfileController.$inject = ["$scope", "$stateParams", "$timeout", "$mdDialog", "firebaseFactory"];
+	ProfileController.$inject = ["$scope", "$stateParams", "$timeout", "$mdDialog", "$state", "firebaseFactory"];
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	function ProfileController($scope, $stateParams, $timeout, $mdDialog, firebaseFactory) {
+	function ProfileController($scope, $stateParams, $timeout, $mdDialog, $state, firebaseFactory) {
 	    'ngInject';
 
 	    var dataCopy;
@@ -89774,19 +89774,27 @@
 	    };
 
 	    $scope.save = function () {
-	        $scope.editable = false;
 	        console.log($scope.userData);
-	        firebaseFactory.db.ref().child('users').child($scope.userId).set($scope.userData, function () {
-	            $scope.showSaved();
-	        });
-	    };
-
-	    $scope.showSaved = function () {
-	        $scope.saved = true;
-	        $timeout(function () {
-	            $scope.saved = false;
-	            // window.location.reload();
-	        }, 500);
+	        $scope.startProgress();
+	        if ($scope.userId) {
+	            firebaseFactory.db.ref().child('users').child($scope.userId).set($scope.userData, function (err) {
+	                $scope.$apply(function () {
+	                    $scope.stopProgress();
+	                    $scope.editable = false;
+	                });
+	                if (err) console.log(err);
+	            });
+	        } else {
+	            var newRef = firebaseFactory.db.ref().child('users').push($scope.userData, function (err) {
+	                $scope.$apply(function () {
+	                    $scope.stopProgress();
+	                    $scope.editable = false;
+	                });
+	                if (err) console.log(err);
+	                console.log(newRef.key);
+	                $state.go('profile', { userId: newRef.key });
+	            });
+	        }
 	    };
 	}
 

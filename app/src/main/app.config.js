@@ -16,7 +16,7 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             data: { protect: false }
         })
         .state('profile', {
-            url: '/profile',
+            url: '/profile/:userId',
             params: {
                 userId: null
             },

@@ -1,4 +1,4 @@
-function AppController($scope, $rootScope, $state, $document) {
+function AppController($scope, $rootScope, $state) {
     'ngInject'
 
     var keys = {37: 1, 38: 1, 39: 1, 40: 1};

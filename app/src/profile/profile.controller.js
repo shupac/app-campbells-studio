@@ -1,4 +1,4 @@
-function ProfileController($scope, $stateParams, $timeout, $mdDialog, firebaseFactory) {
+function ProfileController($scope, $stateParams, $timeout, $mdDialog, $state, firebaseFactory) {
     'ngInject'
 
     var dataCopy;
@@ -44,21 +44,28 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, firebaseFa
     };
 
     $scope.save = function() {
-        $scope.editable = false;
         console.log($scope.userData);
-        firebaseFactory.db.ref().child('users').child($scope.userId)
-            .set($scope.userData, function() {
-                $scope.showSaved();
+        $scope.startProgress();
+        if ($scope.userId) {
+            firebaseFactory.db.ref().child('users').child($scope.userId).set($scope.userData, function(err) {
+                $scope.$apply(function() {
+                    $scope.stopProgress();
+                    $scope.editable = false;
+                });
+                if (err) console.log(err);
             });
+        } else {
+            var newRef = firebaseFactory.db.ref().child('users').push($scope.userData, function(err) {
+                $scope.$apply(function() {
+                    $scope.stopProgress();
+                    $scope.editable = false;
+                });
+                if (err) console.log(err);
+                console.log(newRef.key);
+                $state.go('profile', {userId: newRef.key});
+            });
+        }
     };
-
-    $scope.showSaved = function() {
-        $scope.saved = true;
-        $timeout(function() {
-            $scope.saved = false;
-            // window.location.reload();
-        }, 500);
-    }
 }
 
 export default ProfileController;
