@@ -73985,7 +73985,7 @@
 
 	    $urlRouterProvider.otherwise('/');
 
-	    $mdIconProvider.icon('back', 'app/images/arrow-left.svg').icon('edit', 'app/images/pencil-box.svg').icon('save', 'app/images/content-save.svg').icon('menu', 'app/images/dots-vertical.svg');
+	    $mdIconProvider.icon('back', 'app/images/arrow-left.svg').icon('edit', 'app/images/pencil-box.svg').icon('save', 'app/images/content-save.svg').icon('menu', 'app/images/dots-vertical.svg').icon('search', 'app/images/magnify.svg', 18);
 
 	    $stateProvider.state('home', {
 	        url: '/',
@@ -75449,7 +75449,7 @@
 /* 37 */
 /***/ function(module, exports) {
 
-	module.exports = "<md-toolbar class=\"md-theme-indigo\">\n  <div layout=\"row\">\n    <h1 class=\"md-toolbar-tools\">Students</h1>\n    <ng-include src=\"'app/src/home/menu.template.html'\"></ng-include>\n  </div>\n</md-toolbar>\n<md-content id=\"students-list\" layout-padding>\n  <md-list>\n    <md-list-item ng-repeat=\"(key, student) in students\" ng-click=\"viewProfile(key, student, $event)\" class=\"noright\">\n      <!-- <pre>{{key}} {{ student }}</pre> -->\n      <p>{{ student.first }} {{ student.last }}</p>\n    </md-list-item>\n  </md-list>\n</div>\n\n</md-content>\n"
+	module.exports = "<h2 id=\"title\">\n  <div>Students</div>\n</h2>\n\n<md-toolbar class=\"md-theme-indigo\">\n  <div layout=\"row\" layout-align=\"right center\">\n    <h1 class=\"md-toolbar-tools\"></h1>\n    <ng-include src=\"'app/src/home/menu.template.html'\"></ng-include>\n  </div>\n</md-toolbar>\n\n<md-content id=\"students-list\" layout-padding md-colors=\"{background: 'blue'}\">\n  <md-list>\n    <md-list-item>\n      <md-input-container id=\"search\" class=\"md-block\" flex-gt-xs>\n        <md-icon md-svg-icon=\"search\"></md-icon>\n        <input ng-model=\"searchText\" ng-model-options=\"{ debounce: 300 }\" placeholder=\"Search\">\n      </md-input-container>\n    </md-list-item>\n    <md-list-item ng-repeat=\"student in students | filter:searchText\" ng-click=\"viewProfile(student, $event)\" class=\"noright\">\n      <p>{{ student.first }} {{ student.last }}</p>\n    </md-list-item>\n  </md-list>\n</md-content>\n"
 
 /***/ },
 /* 38 */
@@ -75468,25 +75468,48 @@
 
 	var _moment2 = _interopRequireDefault(_moment);
 
+	var _angular = __webpack_require__(1);
+
+	var _angular2 = _interopRequireDefault(_angular);
+
 	function HomeController($scope, $state, firebaseFactory) {
 	    'ngInject';
 
 	    firebaseFactory.db.ref().child('students').once('value', function (snapshot) {
 	        $scope.$apply(function () {
-	            console.log(snapshot.val());
-	            $scope.students = snapshot.val();
+	            var students = [];
+	            _angular2['default'].forEach(snapshot.val(), function (student, key) {
+	                student.id = key;
+	                students.push(student);
+	            });
+	            students = students.sort(function (a, b) {
+	                var a_last = a.last.toLowerCase();
+	                var b_last = b.last.toLowerCase();
+	                var a_first = a.first.toLowerCase();
+	                var b_first = b.first.toLowerCase();
+
+	                if (a_last !== b_last) return a_last.localeCompare(b_last);
+	                return a_first.localeCompare(b_first);
+	            });
+	            $scope.students = students;
 	        }, function (err) {
 	            console.log(err);
 	        });
 	    });
 
-	    $scope.viewProfile = function (key, student) {
-	        $state.go('profile', { studentId: key, studentData: student });
+	    // $scope.searchText = 'camp';
+
+	    $scope.viewProfile = function (student) {
+	        $state.go('profile', { studentId: student.id, studentData: student });
 	    };
 
 	    $scope.openMenu = function ($mdOpenMenu, ev) {
 	        $mdOpenMenu(ev);
 	    };
+
+	    $scope.$watch('searchText', function (value) {
+	        console.log(value);
+	    });
 
 	    $scope.logout = firebaseFactory.signOut;
 	}
@@ -89942,7 +89965,7 @@
 
 
 	// module
-	exports.push([module.id, "#menu-toggle {\n  margin: 8px 0;\n}\n#menu-close {\n  text-align: right;\n}\n#students-list {\n  padding: 80px 0 0;\n}\n", ""]);
+	exports.push([module.id, "#menu-toggle {\n  margin: 8px 0;\n}\n#students-list md-list {\n  padding: 70px 0 10px;\n  max-width: 600px;\n  margin: 0 auto;\n  background-color: #fafafa;\n  color: rgba(0,0,0,0.87);\n}\n#search div.md-errors-spacer {\n  display: none;\n}\n", ""]);
 
 	// exports
 

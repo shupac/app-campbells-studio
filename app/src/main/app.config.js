@@ -8,6 +8,7 @@ function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationPr
         .icon('edit', 'app/images/pencil-box.svg')
         .icon('save', 'app/images/content-save.svg')
         .icon('menu', 'app/images/dots-vertical.svg')
+        .icon('search', 'app/images/magnify.svg', 18)
 
     $stateProvider
         .state('home', {
