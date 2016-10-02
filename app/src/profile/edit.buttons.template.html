@@ -1,0 +1,6 @@
+<div class="edit-buttons">
+    <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
+    <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
+    <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
+    <span class="saved" ng-show="saved">Saved!</span>
+</div>

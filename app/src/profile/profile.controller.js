@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav, $state, firebaseFactory) {
     'ngInject'
 
@@ -27,16 +29,25 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
         });
     }
 
-    $scope.closeNav = function () {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav('left').close()
-        .then(function () {
-          $log.debug("close LEFT is done");
-        });
+    function recordCheckin() {
+        if ($scope.studentData.classes.remaining) $scope.studentData.classes.remaining = 0;
+        $scope.studentData.classes.remaining--;
+        $scope.save();
+    }
+
+    $scope.checkIn = function(event) {
+        var confirm = $mdDialog.confirm()
+                  .title('Check in ' + $scope.studentData.first + ' for today\'s class?')
+                  .ariaLabel('Check In')
+                  .targetEvent(event)
+                  .ok('Okay')
+                  .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(recordCheckin);
     };
-    
-    $scope.getData = function(modelId) {
-        if ($scope.studentData && $scope.studentData[modelId]) return $scope.studentData[modelId];
+
+    $scope.addPasses = function(event) {
+
     };
 
     $scope.edit = function() {
@@ -59,16 +70,6 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
                     $scope.editable = false;
                 });
                 if (err) console.log(err);
-            });
-        } else {
-            var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function(err) {
-                $scope.$apply(function() {
-                    $scope.stopProgress();
-                    $scope.editable = false;
-                });
-                if (err) console.log(err);
-                console.log(newRef.key);
-                $state.go('profile', {studentId: newRef.key});
             });
         }
     };

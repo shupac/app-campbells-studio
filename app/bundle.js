@@ -90,7 +90,7 @@
 
 	var _profileProfile2 = _interopRequireDefault(_profileProfile);
 
-	var _registerRegister = __webpack_require__(143);
+	var _registerRegister = __webpack_require__(145);
 
 	var _registerRegister2 = _interopRequireDefault(_registerRegister);
 
@@ -75189,7 +75189,7 @@
 /* 26 */
 /***/ function(module, exports) {
 
-	module.exports = "<div layout=\"column\">\n  students\n  <md-content>\n    <md-list>\n      <md-list-item ng-repeat=\"(key, student) in students\" ng-click=\"viewProfile(key, student, $event)\" class=\"noright\">\n        <!-- <pre>{{key}} {{ student }}</pre> -->\n        <p>{{ student.first }} {{ student.last }}</p>\n      </md-list-item>\n    </md-list>\n    <md-button class=\"md-raised md-primary\" ui-sref=\"register\">\n      New Student\n    </md-button>\n  </md-content>\n</div>\n"
+	module.exports = "<div layout=\"row\">\n  <div flex=\"100\">\n  <md-sidenav\n    class=\"md-sidenav-left\"\n    md-component-id=\"left\"\n    md-is-locked-open=\"true\"\n    md-whiteframe=\"4\">\n\n    <md-toolbar class=\"md-theme-indigo\">\n      <h1 class=\"md-toolbar-tools\">Student Profile</h1>\n    </md-toolbar>\n    <md-content layout-padding>\n      <md-list>\n        <md-list-item ng-repeat=\"(key, student) in students\" ng-click=\"viewProfile(key, student, $event)\" class=\"noright\">\n          <!-- <pre>{{key}} {{ student }}</pre> -->\n          <p>{{ student.first }} {{ student.last }}</p>\n        </md-list-item>\n      </md-list>\n      <md-button class=\"md-raised md-primary\" ui-sref=\"register\">\n        New Student\n      </md-button>\n    </div>\n\n    </md-content>\n  </md-sidenav>\n  <div flex>\n    <!-- <app-profile> -->\n  </div>\n</div>\n"
 
 /***/ },
 /* 27 */
@@ -89724,6 +89724,8 @@
 
 	__webpack_require__(141);
 
+	__webpack_require__(143);
+
 	exports['default'] = function () {
 	    return {
 	        template: _profileTemplateHtml2['default'],
@@ -89739,11 +89741,11 @@
 /* 139 */
 /***/ function(module, exports) {
 
-	module.exports = "<section id=\"profile\">\n<div id=\"toolbar\" layout=\"row\">\n  <div flex=\"nogrow\">\n    <md-button class=\"md-fab md-mini md-primary\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n  <div flex>\n    <h3>Student Profile</h3>\n  </div>\n  <div flex=\"nogrow\"></div>\n</div>\n\n<div layout=\"row\" flex>\n  <md-sidenav\n    class=\"md-sidenav-left\"\n    md-component-id=\"left\"\n    md-is-locked-open=\"$mdMedia('gt-sm')\"\n    md-whiteframe=\"4\">\n\n    <md-toolbar class=\"md-theme-indigo\">\n      <h1 class=\"md-toolbar-tools\">Student Profile</h1>\n    </md-toolbar>\n    <md-content layout-padding>\n      <md-button ng-click=\"closeNav()\" class=\"md-primary\" hide-gt-sm>\n        Close Sidenav Left\n      </md-button>\n      <p hide show-gt-sm>\n        This sidenav is locked open on your device. To go back to the default behavior,\n        narrow your display.\n      </p>\n    </md-content>\n  </md-sidenav>\n\n  <div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n    <md-content layout-padding>\n      <div>\n        <form name=\"userForm\" ng-class=\"{editable: editable}\">\n          <div class=\"heading-container\">\n            <h3>\n              Contact Info\n            </h3>\n          </div>\n\n          <fieldset ng-disabled=\"!editable\">\n            <div layout-gt-xs=\"row\">\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>First Name</label>\n                <input ng-model=\"studentData.first\">\n              </md-input-container>\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Last Name</label>\n                <input ng-model=\"studentData.last\">\n              </md-input-container>\n            </div>\n\n            <div layout-gt-xs=\"row\">\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Email</label>\n                <input ng-model=\"studentData.contact.email\">\n              </md-input-container>\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Phone Number</label>\n                <input ng-model=\"studentData.contact.phone\" placeholder=\"555-555-5555\">\n              </md-input-container>\n            </div>\n\n            <md-input-container class=\"md-block\">\n              <label>Address</label>\n              <input ng-model=\"studentData.address.address1\">\n            </md-input-container>\n\n            <md-input-container md-no-float class=\"md-block\">\n              <label>Address 2</label>\n              <input ng-model=\"studentData.address.address2\" placeholder=\"Address 2\">\n            </md-input-container>\n\n            <div layout-gt-xs=\"row\">\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>City</label>\n                <input ng-model=\"studentData.address.city\">\n              </md-input-container>\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>State</label>\n                <md-select ng-model=\"studentData.address.state\" ng-disabled=\"!editable\">\n                  <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n                    {{state.abbrev}}\n                  </md-option>\n                </md-select>\n                <div class=\"md-errors-spacer\"></div>\n              </md-input-container>\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Zip Code</label>\n                <input ng-model=\"studentData.address.zip\" placeholder=\"12345\">\n              </md-input-container>\n            </div>\n          </fieldset>\n          <div class=\"edit-buttons\">\n              <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n              <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n              <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n              <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n          </div>\n\n          <div class=\"heading-container\">\n            <h3>\n              Personal Info\n            </h3>\n            <div id=\"confidentiality\">All information provided will be kept confidential</div>\n          </div>\n\n          <fieldset ng-disabled=\"!editable\">\n            <div layout-gt-xs=\"row\">\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Birthdate</label>\n                <input ng-model=\"studentData.personal.birthdate\" placeholder=\"01/30/1980\">\n              </md-input-container>\n              <md-input-container class=\"md-block\" flex-gt-xs>\n                <label>Occupation</label>\n                <input ng-model=\"studentData.personal.occupation\">\n              </md-input-container>\n            </div>\n\n            <md-input-container class=\"md-block\">\n              <label>Background</label>\n              <textarea ng-model=\"studentData.personal.background\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"yoga, athletics, movement, mindfulness, spiritual, etc.\"></textarea>\n            </md-input-container>\n\n            <md-input-container class=\"md-block\">\n              <label>Intention</label>\n              <textarea ng-model=\"studentData.personal.intention\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"What is your intention with taking yoga classes?\"></textarea>\n            </md-input-container>\n\n            <md-input-container class=\"md-block\">\n              <label>Health History</label>\n              <textarea ng-model=\"studentData.personal.health\" rows=\"1\" md-select-on-focus placeholder=\"Injuries and medical conditions (Please be specific regarding physical and mental aspects)\"></textarea>\n            </md-input-container>\n          </fieldset>\n          <div class=\"edit-buttons\">\n              <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n              <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n              <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n              <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n          </div>\n\n          <div class=\"heading-container\">\n            <h3>\n              Join Our Community\n            </h3>\n          </div>\n\n          <fieldset ng-disabled=\"!editable\">\n            <md-input-container class=\"md-block\" flex-gt-xs>\n              <label>How did you hear about us?</label>\n              <input ng-model=\"studentData.community.referral\">\n            </md-input-container>\n\n            <md-checkbox ng-model=\"studentData.community.mailing\" ng-disabled=\"!editable\" aria-label=\"mailing list\" class=\"md-warn md-align-top-left\" flex>Join our mailing list?<br/>\n                <span class=\"mailing-description\">\n                Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.\n                </span>\n            </md-checkbox>\n          </fieldset>\n          <div class=\"edit-buttons\">\n              <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n              <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n              <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n              <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n          </div>\n\n        </form>\n      </div>\n    </md-content>\n  </div>\n</div>\n</section>\n"
+	module.exports = "<section id=\"profile\">\n<div id=\"toolbar\" layout=\"row\" md-colors=\"{background: 'indigo'}\">\n  <div flex=\"nogrow\">\n    <md-button class=\"md-fab md-mini md-primary\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n  <div flex>\n    <h3>{{ studentData.first }} {{ studentData.last }}</h3>\n  </div>\n  <div flex=\"nogrow\"></div>\n</div>\n\n<section id=\"classes\" layout-gt-xs=\"row\" layout-align=\"center center\" md-colors=\"{background: 'blue'}\">\n  <div id=\"remaining\">\n    <h2>{{ studentData.classes.remaining }}</h2>passes remaining\n  </div>\n  <md-button class=\"md-primary\" md-colors=\"{background: 'yellow'}\" ng-click=\"checkIn($event)\">Check In</md-button>\n  <md-button class=\"md-primary\" md-colors=\"{background: 'amber'}\" ng-click=\"addPasses($event)\">Add Passes</md-button>\n</section>\n\n<div layout=\"row\" flex>\n  <div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n    <md-content layout-padding>\n      <div>\n        <form name=\"userForm\" ng-class=\"{editable: editable}\">\n          <div ng-include=\"'app/src/profile/contact.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/personal.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/community.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n        </form>\n      </div>\n    </md-content>\n  </div>\n</div>\n</section>\n"
 
 /***/ },
 /* 140 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -89751,6 +89753,13 @@
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _moment = __webpack_require__(28);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
 	function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav, $state, firebaseFactory) {
 	    'ngInject';
 
@@ -89778,16 +89787,19 @@
 	        });
 	    }
 
-	    $scope.closeNav = function () {
-	        // Component lookup should always be available since we are not using `ng-if`
-	        $mdSidenav('left').close().then(function () {
-	            $log.debug("close LEFT is done");
-	        });
+	    function recordCheckin() {
+	        if ($scope.studentData.classes.remaining) $scope.studentData.classes.remaining = 0;
+	        $scope.studentData.classes.remaining--;
+	        $scope.save();
+	    }
+
+	    $scope.checkIn = function (event) {
+	        var confirm = $mdDialog.confirm().title('Check in ' + $scope.studentData.first + ' for today\'s class?').ariaLabel('Check In').targetEvent(event).ok('Okay').cancel('Cancel');
+
+	        $mdDialog.show(confirm).then(recordCheckin);
 	    };
 
-	    $scope.getData = function (modelId) {
-	        if ($scope.studentData && $scope.studentData[modelId]) return $scope.studentData[modelId];
-	    };
+	    $scope.addPasses = function (event) {};
 
 	    $scope.edit = function () {
 	        $scope.editable = true;
@@ -89809,16 +89821,6 @@
 	                    $scope.editable = false;
 	                });
 	                if (err) console.log(err);
-	            });
-	        } else {
-	            var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function (err) {
-	                $scope.$apply(function () {
-	                    $scope.stopProgress();
-	                    $scope.editable = false;
-	                });
-	                if (err) console.log(err);
-	                console.log(newRef.key);
-	                $state.go('profile', { studentId: newRef.key });
 	            });
 	        }
 	    };
@@ -89862,13 +89864,53 @@
 
 
 	// module
-	exports.push([module.id, "@media (min-width: 960px) {\n  #toolbar {\n    display: none;\n  }\n}\n#toolbar {\n  height: 48px;\n}\n#toolbar h3 {\n  text-align: center;\n  line-height: 48px;\n  margin: 0;\n}\n#toolbar div:first-child,\n#toolbar div:last-child {\n  text-align: left;\n  width: 104px;\n}\n.profile-container {\n  max-width: 800px;\n  margin: 0 auto;\n  text-align: left;\n}\n.heading-container {\n  text-align: center;\n  margin-bottom: 20px;\n}\ninput,\nmd-select span {\n  color: #000 !important;\n}\n.editable input,\n.editable md-select span {\n  color: #00f !important;\n}\nmd-input-container {\n  margin: 0;\n}\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n#profile .edit-buttons {\n  margin-bottom: 30px;\n  text-align: right;\n}\n#confidentiality {\n  position: relative;\n  top: -15px;\n}\n.mailing-description {\n  color: rgba(0,0,0,0.38);\n}\n", ""]);
+	exports.push([module.id, "#toolbar {\n  height: 48px;\n}\n#toolbar h3 {\n  text-align: center;\n  line-height: 48px;\n  margin: 0;\n}\n#toolbar div:first-child,\n#toolbar div:last-child {\n  text-align: left;\n  width: 104px;\n}\n.profile-container {\n  max-width: 800px;\n  margin: 0 auto;\n  text-align: left;\n}\n.heading-container {\n  text-align: center;\n  margin-bottom: 20px;\n}\ninput,\nmd-select span {\n  color: #000 !important;\n}\n.editable input,\n.editable md-select span {\n  color: #00f !important;\n}\nmd-input-container {\n  margin: 0;\n}\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n#profile .edit-buttons {\n  margin-bottom: 30px;\n  text-align: right;\n}\n#confidentiality {\n  position: relative;\n  top: -15px;\n}\n.mailing-description {\n  color: rgba(0,0,0,0.38);\n}\n", ""]);
 
 	// exports
 
 
 /***/ },
 /* 143 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(144);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(22)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/stylus-loader/index.js!./classes.styl", function() {
+				var newContent = require("!!./../../../node_modules/css-loader/index.js!./../../../node_modules/stylus-loader/index.js!./classes.styl");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 144 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(21)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "#classes {\n  padding: 30px 0;\n}\n#classes #remaining {\n  margin: -6px 10px 0;\n}\n#classes #remaining h2 {\n  display: inline;\n  margin: 0 10px;\n}\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 145 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89883,7 +89925,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _registerComponent = __webpack_require__(144);
+	var _registerComponent = __webpack_require__(146);
 
 	var _registerComponent2 = _interopRequireDefault(_registerComponent);
 
@@ -89891,7 +89933,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 144 */
+/* 146 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89902,15 +89944,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _registerTemplateHtml = __webpack_require__(145);
+	var _registerTemplateHtml = __webpack_require__(147);
 
 	var _registerTemplateHtml2 = _interopRequireDefault(_registerTemplateHtml);
 
-	var _registerController = __webpack_require__(146);
+	var _registerController = __webpack_require__(148);
 
 	var _registerController2 = _interopRequireDefault(_registerController);
 
-	__webpack_require__(147);
+	__webpack_require__(149);
 
 	exports['default'] = function () {
 	    return {
@@ -89924,13 +89966,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 145 */
+/* 147 */
 /***/ function(module, exports) {
 
 	module.exports = "<section id=\"register\">\n<md-toolbar id=\"register\">\n  <div class=\"md-toolbar-tools\">\n    <md-button aria-label=\"Go Back\" ui-sref=\"home\">\n      Go Back\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Register</div>\n</h2>\n\n<div layout=\"column\" ng-cloak class=\"md-inline-form register-container\">\n  <md-content layout-padding>\n    <div>\n      <form name=\"userForm\"><fieldset ng-disabled=\"!editable\">\n        <div class=\"heading-container\">\n          <h3>Contact Info</h3>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>First Name</label>\n            <input ng-model=\"studentData.first\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Last Name</label>\n            <input ng-model=\"studentData.last\">\n          </md-input-container>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Email</label>\n            <input ng-model=\"studentData.contact.email\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Phone Number</label>\n            <input ng-model=\"studentData.contact.phone\" placeholder=\"555-555-5555\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Address</label>\n          <input ng-model=\"studentData.address.address1\">\n        </md-input-container>\n\n        <md-input-container md-no-float class=\"md-block\">\n          <label>Address 2</label>\n          <input ng-model=\"studentData.address.address2\" placeholder=\"Address 2\">\n        </md-input-container>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>City</label>\n            <input ng-model=\"studentData.address.city\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>State</label>\n            <md-select ng-model=\"studentData.address.state\" ng-disabled=\"!editable\">\n              <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n                {{state.abbrev}}\n              </md-option>\n            </md-select>\n            <div class=\"md-errors-spacer\"></div>\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Zip Code</label>\n            <input ng-model=\"studentData.address.zip\" placeholder=\"12345\">\n          </md-input-container>\n        </div>\n\n        <div class=\"heading-container\">\n          <h3>Personal Info</h3>\n          <div id=\"confidentiality\">All information provided will be kept confidential</div>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Birthdate</label>\n            <input ng-model=\"studentData.personal.birthdate\" placeholder=\"01/30/1980\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Occupation</label>\n            <input ng-model=\"studentData.personal.occupation\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Background</label>\n          <textarea ng-model=\"studentData.personal.background\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"yoga, athletics, movement, mindfulness, spiritual, etc.\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Intention</label>\n          <textarea ng-model=\"studentData.personal.intention\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"What is your intention with taking yoga classes?\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Health History</label>\n          <textarea ng-model=\"studentData.personal.health\" rows=\"1\" md-select-on-focus placeholder=\"Injuries and medical conditions (Please be specific regarding physical and mental aspects)\"></textarea>\n        </md-input-container>\n\n        <div class=\"heading-container\">\n          <h3>Join Our Community</h3>\n        </div>\n\n        <md-input-container class=\"md-block\" flex-gt-xs>\n          <label>How did you hear about us?</label>\n          <input ng-model=\"studentData.community.referral\">\n        </md-input-container>\n\n        <md-checkbox ng-model=\"studentData.community.mailing\" ng-disabled=\"!editable\" aria-label=\"mailing list\" class=\"md-warn md-align-top-left\" flex>Join our mailing list?<br/>\n            <span class=\"mailing-description\">\n            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.\n            </span>\n        </md-checkbox>\n\n      </fieldset></form>\n    </div>\n  </md-content>\n\n  <div class=\"edit-buttons\">\n      <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n      <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n      <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n  </div>\n</div>\n</section>"
 
 /***/ },
-/* 146 */
+/* 148 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -89981,27 +90023,18 @@
 	    };
 
 	    $scope.save = function () {
-	        console.log($scope.studentData);
 	        $scope.startProgress();
-	        if ($scope.studentId) {
-	            firebaseFactory.db.ref().child('users').child($scope.studentId).set($scope.studentData, function (err) {
-	                $scope.$apply(function () {
-	                    $scope.stopProgress();
-	                    $scope.editable = false;
-	                });
-	                if (err) console.log(err);
+	        $scope.studentData.classes = {
+	            remaining: 0
+	        };
+	        var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function (err) {
+	            $scope.$apply(function () {
+	                $scope.stopProgress();
+	                $scope.editable = false;
 	            });
-	        } else {
-	            var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function (err) {
-	                $scope.$apply(function () {
-	                    $scope.stopProgress();
-	                    $scope.editable = false;
-	                });
-	                if (err) console.log(err);
-	                console.log(newRef.key);
-	                $state.go('profile', { studentId: newRef.key });
-	            });
-	        }
+	            if (err) console.log(err);
+	            $state.go('profile', { studentId: newRef.key });
+	        });
 	    };
 	}
 
@@ -90009,13 +90042,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 147 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(148);
+	var content = __webpack_require__(150);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(22)(content, {});
@@ -90035,7 +90068,7 @@
 	}
 
 /***/ },
-/* 148 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(21)();

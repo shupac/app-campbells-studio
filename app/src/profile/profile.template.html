@@ -1,173 +1,37 @@
 <section id="profile">
-<div id="toolbar" layout="row">
+<div id="toolbar" layout="row" md-colors="{background: 'indigo'}">
   <div flex="nogrow">
     <md-button class="md-fab md-mini md-primary" aria-label="Go Back" ui-sref="home">
       <md-icon md-svg-icon="back"></md-icon>
     </md-button>
   </div>
   <div flex>
-    <h3>Student Profile</h3>
+    <h3>{{ studentData.first }} {{ studentData.last }}</h3>
   </div>
   <div flex="nogrow"></div>
 </div>
 
+<section id="classes" layout-gt-xs="row" layout-align="center center" md-colors="{background: 'blue'}">
+  <div id="remaining">
+    <h2>{{ studentData.classes.remaining }}</h2>passes remaining
+  </div>
+  <md-button class="md-primary" md-colors="{background: 'yellow'}" ng-click="checkIn($event)">Check In</md-button>
+  <md-button class="md-primary" md-colors="{background: 'amber'}" ng-click="addPasses($event)">Add Passes</md-button>
+</section>
+
 <div layout="row" flex>
-  <md-sidenav
-    class="md-sidenav-left"
-    md-component-id="left"
-    md-is-locked-open="$mdMedia('gt-sm')"
-    md-whiteframe="4">
-
-    <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">Student Profile</h1>
-    </md-toolbar>
-    <md-content layout-padding>
-      <md-button ng-click="closeNav()" class="md-primary" hide-gt-sm>
-        Close Sidenav Left
-      </md-button>
-      <p hide show-gt-sm>
-        This sidenav is locked open on your device. To go back to the default behavior,
-        narrow your display.
-      </p>
-    </md-content>
-  </md-sidenav>
-
   <div layout="column" ng-cloak class="md-inline-form profile-container">
     <md-content layout-padding>
       <div>
         <form name="userForm" ng-class="{editable: editable}">
-          <div class="heading-container">
-            <h3>
-              Contact Info
-            </h3>
-          </div>
+          <div ng-include="'app/src/profile/contact.template.html'"></div>
+          <div ng-include="'app/src/profile/edit.buttons.template.html'"></div>
 
-          <fieldset ng-disabled="!editable">
-            <div layout-gt-xs="row">
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>First Name</label>
-                <input ng-model="studentData.first">
-              </md-input-container>
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Last Name</label>
-                <input ng-model="studentData.last">
-              </md-input-container>
-            </div>
+          <div ng-include="'app/src/profile/personal.template.html'"></div>
+          <div ng-include="'app/src/profile/edit.buttons.template.html'"></div>
 
-            <div layout-gt-xs="row">
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Email</label>
-                <input ng-model="studentData.contact.email">
-              </md-input-container>
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Phone Number</label>
-                <input ng-model="studentData.contact.phone" placeholder="555-555-5555">
-              </md-input-container>
-            </div>
-
-            <md-input-container class="md-block">
-              <label>Address</label>
-              <input ng-model="studentData.address.address1">
-            </md-input-container>
-
-            <md-input-container md-no-float class="md-block">
-              <label>Address 2</label>
-              <input ng-model="studentData.address.address2" placeholder="Address 2">
-            </md-input-container>
-
-            <div layout-gt-xs="row">
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>City</label>
-                <input ng-model="studentData.address.city">
-              </md-input-container>
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>State</label>
-                <md-select ng-model="studentData.address.state" ng-disabled="!editable">
-                  <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-                    {{state.abbrev}}
-                  </md-option>
-                </md-select>
-                <div class="md-errors-spacer"></div>
-              </md-input-container>
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Zip Code</label>
-                <input ng-model="studentData.address.zip" placeholder="12345">
-              </md-input-container>
-            </div>
-          </fieldset>
-          <div class="edit-buttons">
-              <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
-              <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
-              <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
-              <span class="saved" ng-show="saved">Saved!</span>
-          </div>
-
-          <div class="heading-container">
-            <h3>
-              Personal Info
-            </h3>
-            <div id="confidentiality">All information provided will be kept confidential</div>
-          </div>
-
-          <fieldset ng-disabled="!editable">
-            <div layout-gt-xs="row">
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Birthdate</label>
-                <input ng-model="studentData.personal.birthdate" placeholder="01/30/1980">
-              </md-input-container>
-              <md-input-container class="md-block" flex-gt-xs>
-                <label>Occupation</label>
-                <input ng-model="studentData.personal.occupation">
-              </md-input-container>
-            </div>
-
-            <md-input-container class="md-block">
-              <label>Background</label>
-              <textarea ng-model="studentData.personal.background" md-maxlength="300" rows="1" md-select-on-focus placeholder="yoga, athletics, movement, mindfulness, spiritual, etc."></textarea>
-            </md-input-container>
-
-            <md-input-container class="md-block">
-              <label>Intention</label>
-              <textarea ng-model="studentData.personal.intention" md-maxlength="300" rows="1" md-select-on-focus placeholder="What is your intention with taking yoga classes?"></textarea>
-            </md-input-container>
-
-            <md-input-container class="md-block">
-              <label>Health History</label>
-              <textarea ng-model="studentData.personal.health" rows="1" md-select-on-focus placeholder="Injuries and medical conditions (Please be specific regarding physical and mental aspects)"></textarea>
-            </md-input-container>
-          </fieldset>
-          <div class="edit-buttons">
-              <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
-              <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
-              <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
-              <span class="saved" ng-show="saved">Saved!</span>
-          </div>
-
-          <div class="heading-container">
-            <h3>
-              Join Our Community
-            </h3>
-          </div>
-
-          <fieldset ng-disabled="!editable">
-            <md-input-container class="md-block" flex-gt-xs>
-              <label>How did you hear about us?</label>
-              <input ng-model="studentData.community.referral">
-            </md-input-container>
-
-            <md-checkbox ng-model="studentData.community.mailing" ng-disabled="!editable" aria-label="mailing list" class="md-warn md-align-top-left" flex>Join our mailing list?<br/>
-                <span class="mailing-description">
-                Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.
-                </span>
-            </md-checkbox>
-          </fieldset>
-          <div class="edit-buttons">
-              <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
-              <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
-              <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
-              <span class="saved" ng-show="saved">Saved!</span>
-          </div>
-
+          <div ng-include="'app/src/profile/community.template.html'"></div>
+          <div ng-include="'app/src/profile/edit.buttons.template.html'"></div>
         </form>
       </div>
     </md-content>

@@ -1,0 +1,18 @@
+<div class="heading-container">
+  <h3>
+    Join Our Community
+  </h3>
+</div>
+
+<fieldset ng-disabled="!editable">
+  <md-input-container class="md-block" flex-gt-xs>
+    <label>How did you hear about us?</label>
+    <input ng-model="studentData.community.referral">
+  </md-input-container>
+
+  <md-checkbox ng-model="studentData.community.mailing" ng-disabled="!editable" aria-label="mailing list" class="md-warn md-align-top-left" flex>Join our mailing list?<br/>
+      <span class="mailing-description">
+      Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.
+      </span>
+  </md-checkbox>
+</fieldset>

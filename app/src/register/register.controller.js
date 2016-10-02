@@ -42,27 +42,18 @@ function RegisterController($scope, $stateParams, $timeout, $mdDialog, $state, f
     };
 
     $scope.save = function() {
-        console.log($scope.studentData);
         $scope.startProgress();
-        if ($scope.studentId) {
-            firebaseFactory.db.ref().child('users').child($scope.studentId).set($scope.studentData, function(err) {
-                $scope.$apply(function() {
-                    $scope.stopProgress();
-                    $scope.editable = false;
-                });
-                if (err) console.log(err);
+        $scope.studentData.classes = {
+            remaining: 0
+        };
+        var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function(err) {
+            $scope.$apply(function() {
+                $scope.stopProgress();
+                $scope.editable = false;
             });
-        } else {
-            var newRef = firebaseFactory.db.ref().child('users').push($scope.studentData, function(err) {
-                $scope.$apply(function() {
-                    $scope.stopProgress();
-                    $scope.editable = false;
-                });
-                if (err) console.log(err);
-                console.log(newRef.key);
-                $state.go('profile', {studentId: newRef.key});
-            });
-        }
+            if (err) console.log(err);
+            $state.go('profile', {studentId: newRef.key});
+        });
     };
 }
 
