@@ -90,11 +90,11 @@
 
 	var _homeHome2 = _interopRequireDefault(_homeHome);
 
-	var _profileProfile = __webpack_require__(148);
+	var _profileProfile = __webpack_require__(149);
 
 	var _profileProfile2 = _interopRequireDefault(_profileProfile);
 
-	var _registerRegister = __webpack_require__(156);
+	var _registerRegister = __webpack_require__(157);
 
 	var _registerRegister2 = _interopRequireDefault(_registerRegister);
 
@@ -75409,7 +75409,11 @@
 
 	var _homeComponent2 = _interopRequireDefault(_homeComponent);
 
-	exports['default'] = _angular2['default'].module('app.home', []).directive('appHome', _homeComponent2['default']);
+	var _nameFilter = __webpack_require__(148);
+
+	var _nameFilter2 = _interopRequireDefault(_nameFilter);
+
+	exports['default'] = _angular2['default'].module('app.home', []).directive('appHome', _homeComponent2['default']).filter('nameFilter', _nameFilter2['default']);
 	module.exports = exports['default'];
 
 /***/ },
@@ -75449,7 +75453,7 @@
 /* 37 */
 /***/ function(module, exports) {
 
-	module.exports = "<h2 id=\"title\">\n  <div>Students</div>\n</h2>\n\n<md-toolbar class=\"md-theme-indigo\">\n  <div layout=\"row\" layout-align=\"right center\">\n    <h1 class=\"md-toolbar-tools\"></h1>\n    <ng-include src=\"'app/src/home/menu.template.html'\"></ng-include>\n  </div>\n</md-toolbar>\n\n<md-content id=\"students-list\" layout-padding md-colors=\"{background: 'blue'}\">\n  <md-list>\n    <md-list-item>\n      <md-input-container id=\"search\" class=\"md-block\" flex-gt-xs>\n        <md-icon md-svg-icon=\"search\"></md-icon>\n        <input ng-model=\"searchText\" ng-model-options=\"{ debounce: 300 }\" placeholder=\"Search\">\n      </md-input-container>\n    </md-list-item>\n    <md-list-item ng-repeat=\"student in students | filter:searchText\" ng-click=\"viewProfile(student, $event)\" class=\"noright\">\n      <p>{{ student.first }} {{ student.last }}</p>\n    </md-list-item>\n  </md-list>\n</md-content>\n"
+	module.exports = "<h2 id=\"title\">\n  <div>Students</div>\n</h2>\n\n<md-toolbar class=\"md-theme-indigo\">\n  <div layout=\"row\" layout-align=\"right center\">\n    <h1 class=\"md-toolbar-tools\"></h1>\n    <ng-include src=\"'app/src/home/menu.template.html'\"></ng-include>\n  </div>\n</md-toolbar>\n\n<md-content id=\"students-list\" layout-padding md-colors=\"{background: 'blue'}\">\n  <md-list>\n    <md-list-item>\n      <md-input-container id=\"search\" class=\"md-block\" flex-gt-xs>\n        <md-icon md-svg-icon=\"search\"></md-icon>\n        <input ng-model=\"searchText\" ng-model-options=\"{ debounce: 300 }\" placeholder=\"Search\">\n      </md-input-container>\n    </md-list-item>\n    <md-list-item ng-repeat=\"student in students | nameFilter:searchText\" ng-click=\"viewProfile(student, $event)\" class=\"noright\">\n      <p>{{ student.last }}, {{ student.first }}</p>\n    </md-list-item>\n  </md-list>\n</md-content>\n"
 
 /***/ },
 /* 38 */
@@ -89972,6 +89976,33 @@
 
 /***/ },
 /* 148 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports["default"] = function () {
+	    return function (students, text) {
+	        if (!text) return students;
+	        text = text.toLowerCase();
+	        if (!students) return;
+	        var results = students.filter(function (student) {
+	            var first = student.first.toLowerCase();
+	            var last = student.last.toLowerCase();
+	            return first.indexOf(text) > -1 || last.indexOf(text) > -1;
+	        });
+	        return results;
+	    };
+	};
+
+	;
+	module.exports = exports["default"];
+
+/***/ },
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -89986,7 +90017,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _profileComponent = __webpack_require__(149);
+	var _profileComponent = __webpack_require__(150);
 
 	var _profileComponent2 = _interopRequireDefault(_profileComponent);
 
@@ -89994,7 +90025,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 149 */
+/* 150 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90005,17 +90036,17 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _profileTemplateHtml = __webpack_require__(150);
+	var _profileTemplateHtml = __webpack_require__(151);
 
 	var _profileTemplateHtml2 = _interopRequireDefault(_profileTemplateHtml);
 
-	var _profileController = __webpack_require__(151);
+	var _profileController = __webpack_require__(152);
 
 	var _profileController2 = _interopRequireDefault(_profileController);
 
-	__webpack_require__(152);
+	__webpack_require__(153);
 
-	__webpack_require__(154);
+	__webpack_require__(155);
 
 	exports['default'] = function () {
 	    return {
@@ -90029,13 +90060,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 150 */
+/* 151 */
 /***/ function(module, exports) {
 
 	module.exports = "<section id=\"profile\">\n<md-toolbar>\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>{{ studentData.first }} {{ studentData.last }}</div>\n</h2>\n\n<section id=\"classes\" layout-gt-xs=\"row\" layout-align=\"center center\" md-colors=\"{background: 'blue'}\">\n  <div id=\"remaining\">\n    <h2>{{ studentData.classes.remaining }}</h2>passes remaining\n  </div>\n  <md-button class=\"md-primary\" md-colors=\"{background: 'yellow'}\" ng-click=\"checkIn($event)\">Check In</md-button>\n  <md-button class=\"md-primary\" md-colors=\"{background: 'amber'}\" ng-click=\"addPasses($event)\">Add Passes</md-button>\n</section>\n\n<div layout=\"row\" flex>\n  <div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n    <md-content layout-padding>\n      <div>\n        <form name=\"userForm\" ng-class=\"{editable: editable}\">\n          <div ng-include=\"'app/src/profile/contact.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/personal.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/community.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n        </form>\n      </div>\n    </md-content>\n  </div>\n</div>\n</section>\n"
 
 /***/ },
-/* 151 */
+/* 152 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90143,13 +90174,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 152 */
+/* 153 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(153);
+	var content = __webpack_require__(154);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(22)(content, {});
@@ -90169,7 +90200,7 @@
 	}
 
 /***/ },
-/* 153 */
+/* 154 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(21)();
@@ -90183,13 +90214,13 @@
 
 
 /***/ },
-/* 154 */
+/* 155 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(155);
+	var content = __webpack_require__(156);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(22)(content, {});
@@ -90209,7 +90240,7 @@
 	}
 
 /***/ },
-/* 155 */
+/* 156 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(21)();
@@ -90223,7 +90254,7 @@
 
 
 /***/ },
-/* 156 */
+/* 157 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90238,7 +90269,7 @@
 
 	var _angular2 = _interopRequireDefault(_angular);
 
-	var _registerComponent = __webpack_require__(157);
+	var _registerComponent = __webpack_require__(158);
 
 	var _registerComponent2 = _interopRequireDefault(_registerComponent);
 
@@ -90246,7 +90277,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 157 */
+/* 158 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -90257,15 +90288,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _registerTemplateHtml = __webpack_require__(158);
+	var _registerTemplateHtml = __webpack_require__(159);
 
 	var _registerTemplateHtml2 = _interopRequireDefault(_registerTemplateHtml);
 
-	var _registerController = __webpack_require__(159);
+	var _registerController = __webpack_require__(160);
 
 	var _registerController2 = _interopRequireDefault(_registerController);
 
-	__webpack_require__(160);
+	__webpack_require__(161);
 
 	exports['default'] = function () {
 	    return {
@@ -90279,13 +90310,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 158 */
+/* 159 */
 /***/ function(module, exports) {
 
 	module.exports = "<section id=\"register\">\n<md-toolbar id=\"register\">\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Register</div>\n</h2>\n\n<div layout=\"column\" ng-cloak class=\"md-inline-form register-container\">\n  <md-content layout-padding>\n    <div>\n      <form name=\"userForm\"><fieldset ng-disabled=\"!editable\">\n        <div class=\"heading-container\">\n          <h3>Contact Info</h3>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>First Name</label>\n            <input ng-model=\"studentData.first\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Last Name</label>\n            <input ng-model=\"studentData.last\">\n          </md-input-container>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Email</label>\n            <input ng-model=\"studentData.contact.email\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Phone Number</label>\n            <input ng-model=\"studentData.contact.phone\" placeholder=\"555-555-5555\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Address</label>\n          <input ng-model=\"studentData.address.address1\">\n        </md-input-container>\n\n        <md-input-container md-no-float class=\"md-block\">\n          <label>Address 2</label>\n          <input ng-model=\"studentData.address.address2\" placeholder=\"Address 2\">\n        </md-input-container>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>City</label>\n            <input ng-model=\"studentData.address.city\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>State</label>\n            <md-select ng-model=\"studentData.address.state\" ng-disabled=\"!editable\">\n              <md-option ng-repeat=\"state in states\" value=\"{{state.abbrev}}\">\n                {{state.abbrev}}\n              </md-option>\n            </md-select>\n            <div class=\"md-errors-spacer\"></div>\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Zip Code</label>\n            <input ng-model=\"studentData.address.zip\" placeholder=\"12345\">\n          </md-input-container>\n        </div>\n\n        <div class=\"heading-container\">\n          <h3>Personal Info</h3>\n          <div id=\"confidentiality\">All information provided will be kept confidential</div>\n        </div>\n\n        <div layout-gt-xs=\"row\">\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Birthdate</label>\n            <input ng-model=\"studentData.personal.birthdate\" placeholder=\"01/30/1980\">\n          </md-input-container>\n          <md-input-container class=\"md-block\" flex-gt-xs>\n            <label>Occupation</label>\n            <input ng-model=\"studentData.personal.occupation\">\n          </md-input-container>\n        </div>\n\n        <md-input-container class=\"md-block\">\n          <label>Background</label>\n          <textarea ng-model=\"studentData.personal.background\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"yoga, athletics, movement, mindfulness, spiritual, etc.\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Intention</label>\n          <textarea ng-model=\"studentData.personal.intention\" md-maxlength=\"300\" rows=\"1\" md-select-on-focus placeholder=\"What is your intention with taking yoga classes?\"></textarea>\n        </md-input-container>\n\n        <md-input-container class=\"md-block\">\n          <label>Health History</label>\n          <textarea ng-model=\"studentData.personal.health\" rows=\"1\" md-select-on-focus placeholder=\"Injuries and medical conditions (Please be specific regarding physical and mental aspects)\"></textarea>\n        </md-input-container>\n\n        <div class=\"heading-container\">\n          <h3>Join Our Community</h3>\n        </div>\n\n        <md-input-container class=\"md-block\" flex-gt-xs>\n          <label>How did you hear about us?</label>\n          <input ng-model=\"studentData.community.referral\">\n        </md-input-container>\n\n        <md-checkbox ng-model=\"studentData.community.mailing\" ng-disabled=\"!editable\" aria-label=\"mailing list\" class=\"md-warn md-align-top-left\" flex>Join our mailing list?<br/>\n            <span class=\"mailing-description\">\n            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.\n            </span>\n        </md-checkbox>\n\n      </fieldset></form>\n    </div>\n  </md-content>\n\n  <div class=\"edit-buttons\">\n      <md-button class=\"md-raised md-primary\" ng-hide=\"editable\" ng-click=\"edit()\" >Edit</md-button>\n      <md-button class=\"md-primary md-hue-1 cancel\" ng-show=\"editable\" ng-click=\"cancel($event)\">Cancel</md-button>\n      <md-button class=\"md-raised md-primary\" ng-show=\"editable\" ng-click=\"save()\" >Save</md-button>\n      <span class=\"saved\" ng-show=\"saved\">Saved!</span>\n  </div>\n</div>\n</section>"
 
 /***/ },
-/* 159 */
+/* 160 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -90323,13 +90354,13 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 160 */
+/* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(161);
+	var content = __webpack_require__(162);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(22)(content, {});
@@ -90349,7 +90380,7 @@
 	}
 
 /***/ },
-/* 161 */
+/* 162 */
 /***/ function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(21)();

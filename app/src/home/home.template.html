@@ -17,8 +17,8 @@
         <input ng-model="searchText" ng-model-options="{ debounce: 300 }" placeholder="Search">
       </md-input-container>
     </md-list-item>
-    <md-list-item ng-repeat="student in students | filter:searchText" ng-click="viewProfile(student, $event)" class="noright">
-      <p>{{ student.first }} {{ student.last }}</p>
+    <md-list-item ng-repeat="student in students | nameFilter:searchText" ng-click="viewProfile(student, $event)" class="noright">
+      <p>{{ student.last }}, {{ student.first }}</p>
     </md-list-item>
   </md-list>
 </md-content>
