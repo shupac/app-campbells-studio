@@ -7,6 +7,7 @@ function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationPr
         .icon('back', 'app/images/arrow-left.svg')
         .icon('edit', 'app/images/pencil-box.svg')
         .icon('save', 'app/images/content-save.svg')
+        .icon('menu', 'app/images/dots-vertical.svg')
 
     $stateProvider
         .state('home', {

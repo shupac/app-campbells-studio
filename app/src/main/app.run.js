@@ -4,7 +4,7 @@ function run($rootScope, $state, firebaseFactory) {
     // $state.go('profile', {userId: 'shu'});
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams) {
-        if (!firebaseFactory.isAuth() && toState.data.protect) {
+        if (!firebaseFactory.getUser() && toState.data.protect) {
             event.preventDefault();
             $state.go('login');
             $rootScope.returnState = toState;

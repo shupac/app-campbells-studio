@@ -73985,7 +73985,7 @@
 
 	    $urlRouterProvider.otherwise('/');
 
-	    $mdIconProvider.icon('back', 'app/images/arrow-left.svg').icon('edit', 'app/images/pencil-box.svg').icon('save', 'app/images/content-save.svg');
+	    $mdIconProvider.icon('back', 'app/images/arrow-left.svg').icon('edit', 'app/images/pencil-box.svg').icon('save', 'app/images/content-save.svg').icon('menu', 'app/images/dots-vertical.svg');
 
 	    $stateProvider.state('home', {
 	        url: '/',
@@ -74030,7 +74030,7 @@
 	    // $state.go('profile', {userId: 'shu'});
 
 	    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
-	        if (!firebaseFactory.isAuth() && toState.data.protect) {
+	        if (!firebaseFactory.getUser() && toState.data.protect) {
 	            event.preventDefault();
 	            $state.go('login');
 	            $rootScope.returnState = toState;
@@ -74141,8 +74141,6 @@
 
 	  _firebase2['default'].initializeApp(config);
 
-	  var user;
-
 	  _firebase2['default'].auth().onAuthStateChanged(function (user) {
 	    if (user) {
 	      $rootScope.resumeRoute();
@@ -74152,14 +74150,7 @@
 	  });
 
 	  function auth(cred) {
-	    return _firebase2['default'].auth().signInWithEmailAndPassword(cred.email, cred.password).then(function (result) {
-	      console.log(result);
-	    })['catch'](function (error) {
-	      // Handle Errors here.
-	      var errorCode = error.code;
-	      var errorMessage = error.message;
-	      // ...
-	    });
+	    return _firebase2['default'].auth().signInWithEmailAndPassword(cred.email, cred.password);
 	  }
 
 	  function signOut() {
@@ -74169,8 +74160,8 @@
 	  return {
 	    auth: auth,
 	    db: _firebase2['default'].database(),
-	    isAuth: function isAuth() {
-	      return !!_firebase2['default'].auth().currentUser;
+	    getUser: function getUser() {
+	      return _firebase2['default'].auth().currentUser;
 	    },
 	    signOut: signOut
 	  };
@@ -75228,7 +75219,11 @@
 	    };
 
 	    $scope.login = function () {
-	        firebaseFactory.auth($scope.cred).then(function () {});
+	        firebaseFactory.auth($scope.cred).then(function (result) {})['catch'](function (error) {
+	            var errorCode = error.code;
+	            var errorMessage = error.message;
+	            alert(errorMessage);
+	        });
 	    };
 	}
 
@@ -90044,14 +90039,12 @@
 	        return { abbrev: state };
 	    });
 
+	    var studentRef = firebaseFactory.db.ref('students/' + $scope.studentId);
 	    if ($scope.studentId && $scope.studentData) {
 	        console.log('existing data', $scope.studentData);
-	    } else if (!$scope.studentId) {
-	        $scope.newUser = true;
-	        $scope.editable = true;
 	    } else {
 	        $scope.startProgress();
-	        firebaseFactory.db.ref().child('students').child($scope.studentId).once('value', function (snapshot) {
+	        studentRef.once('value', function (snapshot) {
 	            console.log(snapshot.val());
 	            $scope.$apply(function () {
 	                $scope.studentData = snapshot.val();
@@ -90060,10 +90053,30 @@
 	        });
 	    }
 
+	    function addRemaining(numPasses) {
+	        $scope.studentData.classes.remaining += numPasses;
+	        studentRef.child('classes').child('remaining').set($scope.studentData.classes.remaining, function (err) {
+	            if (err) console.log(err);
+	        });
+	    }
+
 	    function recordCheckin() {
-	        if ($scope.studentData.classes.remaining) $scope.studentData.classes.remaining = 0;
-	        $scope.studentData.classes.remaining--;
-	        $scope.save();
+	        addRemaining(-1);
+	        studentRef.child('classes').child('checkins').push({
+	            date: (0, _moment2['default'])().format(),
+	            teacher: firebaseFactory.getUser().email
+	        });
+	    }
+
+	    function recordPasses(numPasses) {
+	        numPasses = parseInt(numPasses);
+	        console.log('num passes', numPasses);
+	        addRemaining(numPasses);
+	        studentRef.child('classes').child('passes').push({
+	            date: (0, _moment2['default'])().format(),
+	            teacher: firebaseFactory.getUser().email,
+	            quantity: numPasses
+	        });
 	    }
 
 	    $scope.checkIn = function (event) {
@@ -90072,7 +90085,11 @@
 	        $mdDialog.show(confirm).then(recordCheckin);
 	    };
 
-	    $scope.addPasses = function (event) {};
+	    $scope.addPasses = function (event) {
+	        var confirm = $mdDialog.prompt().title('How many passes to add?').textContent('Enter a number').placeholder('10').ariaLabel('Add passes').targetEvent(event).ok('Add').cancel('Cancel');
+
+	        $mdDialog.show(confirm).then(recordPasses);
+	    };
 
 	    $scope.edit = function () {
 	        $scope.editable = true;
@@ -90088,7 +90105,7 @@
 	        console.log($scope.studentData);
 	        $scope.startProgress();
 	        if ($scope.studentId) {
-	            firebaseFactory.db.ref().child('students').child($scope.studentId).set($scope.studentData, function (err) {
+	            studentRef.set($scope.studentData, function (err) {
 	                $scope.$apply(function () {
 	                    $scope.stopProgress();
 	                    $scope.editable = false;

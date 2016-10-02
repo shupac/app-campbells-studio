@@ -13,14 +13,12 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
             return {abbrev: state};
           });
     
+    var studentRef = firebaseFactory.db.ref('students/' + $scope.studentId);
     if ($scope.studentId && $scope.studentData) {
         console.log('existing data', $scope.studentData);
-    } else if (!$scope.studentId) {
-        $scope.newUser = true;
-        $scope.editable = true;
     } else {
         $scope.startProgress();
-        firebaseFactory.db.ref().child('students').child($scope.studentId).once('value', function(snapshot) {
+        studentRef.once('value', function(snapshot) {
             console.log(snapshot.val());
             $scope.$apply(function() {
                 $scope.studentData = snapshot.val();
@@ -29,25 +27,55 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
         });
     }
 
+    function addRemaining(numPasses) {
+        $scope.studentData.classes.remaining += numPasses;
+        studentRef.child('classes').child('remaining')
+            .set($scope.studentData.classes.remaining, function(err) {
+                if (err) console.log(err);
+            });
+    }
+
     function recordCheckin() {
-        if ($scope.studentData.classes.remaining) $scope.studentData.classes.remaining = 0;
-        $scope.studentData.classes.remaining--;
-        $scope.save();
+        addRemaining(-1);
+        studentRef.child('classes').child('checkins').push({
+            date: moment().format(),
+            teacher: firebaseFactory.getUser().email
+        });
+    }
+
+    function recordPasses(numPasses) {
+        numPasses = parseInt(numPasses);
+        console.log('num passes', numPasses);
+        addRemaining(numPasses);
+        studentRef.child('classes').child('passes').push({
+            date: moment().format(),
+            teacher: firebaseFactory.getUser().email,
+            quantity: numPasses
+        });
     }
 
     $scope.checkIn = function(event) {
         var confirm = $mdDialog.confirm()
-                  .title('Check in ' + $scope.studentData.first + ' for today\'s class?')
-                  .ariaLabel('Check In')
-                  .targetEvent(event)
-                  .ok('Okay')
-                  .cancel('Cancel');
+                .title('Check in ' + $scope.studentData.first + ' for today\'s class?')
+                .ariaLabel('Check In')
+                .targetEvent(event)
+                .ok('Okay')
+                .cancel('Cancel');
 
         $mdDialog.show(confirm).then(recordCheckin);
     };
 
     $scope.addPasses = function(event) {
+        var confirm = $mdDialog.prompt()
+                .title('How many passes to add?')
+                .textContent('Enter a number')
+                .placeholder('10')
+                .ariaLabel('Add passes')
+                .targetEvent(event)
+                .ok('Add')
+                .cancel('Cancel');
 
+        $mdDialog.show(confirm).then(recordPasses);
     };
 
     $scope.edit = function() {
@@ -64,7 +92,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
         console.log($scope.studentData);
         $scope.startProgress();
         if ($scope.studentId) {
-            firebaseFactory.db.ref().child('students').child($scope.studentId).set($scope.studentData, function(err) {
+            studentRef.set($scope.studentData, function(err) {
                 $scope.$apply(function() {
                     $scope.stopProgress();
                     $scope.editable = false;

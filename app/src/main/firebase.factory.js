@@ -12,8 +12,6 @@ export default function FirebaseFactory($state, $rootScope) {
     };
 
     firebase.initializeApp(config);
-
-    var user;
     
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -24,14 +22,7 @@ export default function FirebaseFactory($state, $rootScope) {
     });
 
     function auth(cred) {
-        return firebase.auth().signInWithEmailAndPassword(cred.email, cred.password).then(function(result) {
-          console.log(result);
-        }).catch(function(error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-        });
+        return firebase.auth().signInWithEmailAndPassword(cred.email, cred.password);
     }
 
     function signOut() {
@@ -41,8 +32,8 @@ export default function FirebaseFactory($state, $rootScope) {
     return {
       auth,
       db: firebase.database(),
-      isAuth: function() {
-        return !!firebase.auth().currentUser;
+      getUser: function() {
+        return firebase.auth().currentUser;
       },
       signOut
     };
