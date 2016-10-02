@@ -1,15 +1,15 @@
 <section id="profile">
-<div id="toolbar" layout="row" md-colors="{background: 'indigo'}">
-  <div flex="nogrow">
-    <md-button class="md-fab md-mini md-primary" aria-label="Go Back" ui-sref="home">
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <md-button class="back-button" aria-label="Go Back" ui-sref="home">
       <md-icon md-svg-icon="back"></md-icon>
     </md-button>
   </div>
-  <div flex>
-    <h3>{{ studentData.first }} {{ studentData.last }}</h3>
-  </div>
-  <div flex="nogrow"></div>
-</div>
+</md-toolbar>
+
+<h2 id="title">
+  <div>{{ studentData.first }} {{ studentData.last }}</div>
+</h2>
 
 <section id="classes" layout-gt-xs="row" layout-align="center center" md-colors="{background: 'blue'}">
   <div id="remaining">

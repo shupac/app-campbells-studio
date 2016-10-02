@@ -7,7 +7,8 @@ import appController from './main/app.controller';
 import firebaseFactory from './main/firebase.factory';
 import './main/app.styl';
 
-import components from './components/components';
+import login from './login/login';
+import admin from './admin/admin';
 import home from './home/home';
 import profile from './profile/profile';
 import register from './register/register';
@@ -16,7 +17,8 @@ angular.module('app',
     [
         ngMaterial,
         uiRouter,
-        components.name,
+        login.name,
+        admin.name,
         home.name,
         profile.name,
         register.name

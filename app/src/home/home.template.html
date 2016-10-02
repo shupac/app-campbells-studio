@@ -1,29 +1,16 @@
-<div layout="row">
-  <div flex="100">
-  <md-sidenav
-    class="md-sidenav-left"
-    md-component-id="left"
-    md-is-locked-open="true"
-    md-whiteframe="4">
-
-    <md-toolbar class="md-theme-indigo">
-      <h1 class="md-toolbar-tools">Student Profile</h1>
-    </md-toolbar>
-    <md-content layout-padding>
-      <md-list>
-        <md-list-item ng-repeat="(key, student) in students" ng-click="viewProfile(key, student, $event)" class="noright">
-          <!-- <pre>{{key}} {{ student }}</pre> -->
-          <p>{{ student.first }} {{ student.last }}</p>
-        </md-list-item>
-      </md-list>
-      <md-button class="md-raised md-primary" ui-sref="register">
-        New Student
-      </md-button>
-    </div>
-
-    </md-content>
-  </md-sidenav>
-  <div flex>
-    <!-- <app-profile> -->
+<md-toolbar class="md-theme-indigo">
+  <div layout="row">
+    <h1 class="md-toolbar-tools">Students</h1>
+    <ng-include src="'app/src/home/menu.template.html'"></ng-include>
   </div>
+</md-toolbar>
+<md-content id="students-list" layout-padding>
+  <md-list>
+    <md-list-item ng-repeat="(key, student) in students" ng-click="viewProfile(key, student, $event)" class="noright">
+      <!-- <pre>{{key}} {{ student }}</pre> -->
+      <p>{{ student.first }} {{ student.last }}</p>
+    </md-list-item>
+  </md-list>
 </div>
+
+</md-content>

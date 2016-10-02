@@ -38,11 +38,21 @@ function AppController($scope, $rootScope, $state) {
     $scope.startProgress = function() {
         $rootScope.showProgress = true;
         disableScroll();
-    }
+    };
+
     $scope.stopProgress = function() {
         $rootScope.showProgress = false;
         enableScroll();
-    }
+    };
+
+    $rootScope.resumeRoute = function() {
+      if ($rootScope.returnState) {
+        $state.go($rootScope.returnState, $rootScope.returnParams);
+        $rootScope.returnState = null;
+      } else {
+        $state.go('home');
+      }
+    };
 }
 
 export default AppController;

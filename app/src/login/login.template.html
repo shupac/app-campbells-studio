@@ -1,0 +1,21 @@
+<section id="login" layout="column" layout-align="center center">
+<h1>Login</h1>
+<div class="container">
+  <form id="credentials" layout="column">
+    <md-input-container class="md-block">
+      <label>Email</label>
+      <input ng-model="cred.email" type="email">
+    </md-input-container>
+
+    <md-input-container class="md-block">
+      <label>Password</label>
+      <input ng-model="cred.password" type="password">
+    </md-input-container>
+  </form>
+
+  <div layout="column">
+    <md-button class="md-raised md-primary" ng-click="login()">Login</md-button>
+    <md-button class="md-primary" ng-click="reset()">Forgot password</md-button>
+  </div>
+</div>
+</section>

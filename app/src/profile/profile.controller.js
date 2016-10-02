@@ -20,7 +20,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
         $scope.editable = true;
     } else {
         $scope.startProgress();
-        firebaseFactory.db.ref().child('users').child($scope.studentId).once('value', function(snapshot) {
+        firebaseFactory.db.ref().child('students').child($scope.studentId).once('value', function(snapshot) {
             console.log(snapshot.val());
             $scope.$apply(function() {
                 $scope.studentData = snapshot.val();
@@ -64,7 +64,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
         console.log($scope.studentData);
         $scope.startProgress();
         if ($scope.studentId) {
-            firebaseFactory.db.ref().child('users').child($scope.studentId).set($scope.studentData, function(err) {
+            firebaseFactory.db.ref().child('students').child($scope.studentId).set($scope.studentData, function(err) {
                 $scope.$apply(function() {
                     $scope.stopProgress();
                     $scope.editable = false;

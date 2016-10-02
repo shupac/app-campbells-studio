@@ -1,6 +1,6 @@
 import firebase from 'firebase';
 
-export default function() {
+export default function FirebaseFactory($state, $rootScope) {
     'ngInject'
 
     var config = {
@@ -10,20 +10,40 @@ export default function() {
       storageBucket: "",
       messagingSenderId: "273710453930"
     };
+
     firebase.initializeApp(config);
 
-    var email = 'djshu.us@gmail.com';
-    var password = 'forrestyoga';
-
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      console.log(error);
+    var user;
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        $rootScope.resumeRoute();
+      } else {
+        $state.go('login');
+      }
     });
 
+    function auth(cred) {
+        return firebase.auth().signInWithEmailAndPassword(cred.email, cred.password).then(function(result) {
+          console.log(result);
+        }).catch(function(error) {
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // ...
+        });
+    }
+
+    function signOut() {
+      return firebase.auth().signOut();
+    }
+
     return {
-      db: firebase.database()
+      auth,
+      db: firebase.database(),
+      isAuth: function() {
+        return !!firebase.auth().currentUser;
+      },
+      signOut
     };
 };

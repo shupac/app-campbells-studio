@@ -2,7 +2,7 @@ function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationPr
     'ngInject'
 
     $urlRouterProvider.otherwise('/');
-    // $locationProvider.html5Mode(true);
+
     $mdIconProvider
         .icon('back', 'app/images/arrow-left.svg')
         .icon('edit', 'app/images/pencil-box.svg')
@@ -31,9 +31,9 @@ function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationPr
         })
         .state('register', {
             url: '/register',
-            template: '<app-register></app-register>'
+            template: '<app-register></app-register>',
+            data: { protect: false }
         })
-
 }
 
 export default config;
