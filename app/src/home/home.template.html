@@ -1,19 +1,14 @@
-<h1>All Tracks</h1>
-<table class="table table-striped">
-    <tr>
-        <th>Artist</th>
-        <th>Title</th>
-        <th>Month</th>
-        <th>Topic</th>
-        <th>Pirate</th>
-    </tr>
-    <tr class="track-item" ng-repeat="track in tracks" ng-dblclick="load(track)">
-        <td>{{ track.artist }}</td>
-        <td>{{ track.title }}</td>
-        <td>{{ track.month }}</td>
-        <td>{{ track.topic | topic }}</td>
-        <td>{{ track.userId | user }}</td>
-    </tr>
-</table>
-
-<a href="#" ng-click="goMonth()">Go to this Month</a>
+<div layout="column">
+  students
+  <md-content>
+    <md-list>
+      <md-list-item ng-repeat="(key, student) in students" ng-click="viewProfile(key, student, $event)" class="noright">
+        <!-- <pre>{{key}} {{ student }}</pre> -->
+        <p>{{ student.first }} {{ student.last }}</p>
+      </md-list-item>
+    </md-list>
+    <md-button class="md-raised md-primary" ui-sref="register">
+      New Student
+    </md-button>
+  </md-content>
+</div>

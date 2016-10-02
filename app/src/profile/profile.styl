@@ -1,36 +1,24 @@
-h2#title
-    position fixed
-    width 100%
-    text-align center
-    color rgba(255,255,255,0.87)
-    z-index 5
-    font-family: Roboto,Helvetica Neue,sans-serif
-    font-weight 400
-    pointer-events none
-
-    @media (min-width: 700px) and (max-width: 960px)
-        top -10px
-
-    @media (min-width: 400px) and (max-width: 700px)
-        top -5px
-
-    @media (max-width: 400px)
-        font-size 16px
-        top 6px
-
-md-toolbar#profile
-    position fixed
-
-#toolbar-buttons
-    @media (max-width: 400px)
+@media (min-width: 960px)
+    #toolbar
         display none
+
+#toolbar
+    height 48px
+    // background-color rgb(63,81,181)
+
+#toolbar h3
+    text-align center
+    line-height 48px
+    margin 0
+
+#toolbar div:first-child, #toolbar div:last-child
+    text-align left
+    width 104px
 
 .profile-container
     max-width 800px
     margin 0 auto
     text-align left
-    padding 40px 0
-
 
 .heading-container
     text-align center
@@ -49,8 +37,8 @@ fieldset
     margin 0
     padding 0
 
-.edit-buttons
-    margin-top 30px
+#profile .edit-buttons
+    margin-bottom 30px
     text-align right
 
 #confidentiality

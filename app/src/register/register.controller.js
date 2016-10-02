@@ -1,4 +1,4 @@
-function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav, $state, firebaseFactory) {
+function RegisterController($scope, $stateParams, $timeout, $mdDialog, $state, firebaseFactory) {
     'ngInject'
 
     var dataCopy;
@@ -26,14 +26,6 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
             });
         });
     }
-
-    $scope.closeNav = function () {
-      // Component lookup should always be available since we are not using `ng-if`
-      $mdSidenav('left').close()
-        .then(function () {
-          $log.debug("close LEFT is done");
-        });
-    };
     
     $scope.getData = function(modelId) {
         if ($scope.studentData && $scope.studentData[modelId]) return $scope.studentData[modelId];
@@ -74,4 +66,4 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
     };
 }
 
-export default ProfileController;
+export default RegisterController;

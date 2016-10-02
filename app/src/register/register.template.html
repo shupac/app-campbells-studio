@@ -1,0 +1,131 @@
+<section id="register">
+<md-toolbar id="register">
+  <div class="md-toolbar-tools">
+    <md-button aria-label="Go Back" ui-sref="home">
+      Go Back
+    </md-button>
+  </div>
+</md-toolbar>
+
+<h2 id="title">
+  <div>Register</div>
+</h2>
+
+<div layout="column" ng-cloak class="md-inline-form register-container">
+  <md-content layout-padding>
+    <div>
+      <form name="userForm"><fieldset ng-disabled="!editable">
+        <div class="heading-container">
+          <h3>Contact Info</h3>
+        </div>
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>First Name</label>
+            <input ng-model="studentData.first">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Last Name</label>
+            <input ng-model="studentData.last">
+          </md-input-container>
+        </div>
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Email</label>
+            <input ng-model="studentData.contact.email">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Phone Number</label>
+            <input ng-model="studentData.contact.phone" placeholder="555-555-5555">
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Address</label>
+          <input ng-model="studentData.address.address1">
+        </md-input-container>
+
+        <md-input-container md-no-float class="md-block">
+          <label>Address 2</label>
+          <input ng-model="studentData.address.address2" placeholder="Address 2">
+        </md-input-container>
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>City</label>
+            <input ng-model="studentData.address.city">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>State</label>
+            <md-select ng-model="studentData.address.state" ng-disabled="!editable">
+              <md-option ng-repeat="state in states" value="{{state.abbrev}}">
+                {{state.abbrev}}
+              </md-option>
+            </md-select>
+            <div class="md-errors-spacer"></div>
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Zip Code</label>
+            <input ng-model="studentData.address.zip" placeholder="12345">
+          </md-input-container>
+        </div>
+
+        <div class="heading-container">
+          <h3>Personal Info</h3>
+          <div id="confidentiality">All information provided will be kept confidential</div>
+        </div>
+
+        <div layout-gt-xs="row">
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Birthdate</label>
+            <input ng-model="studentData.personal.birthdate" placeholder="01/30/1980">
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Occupation</label>
+            <input ng-model="studentData.personal.occupation">
+          </md-input-container>
+        </div>
+
+        <md-input-container class="md-block">
+          <label>Background</label>
+          <textarea ng-model="studentData.personal.background" md-maxlength="300" rows="1" md-select-on-focus placeholder="yoga, athletics, movement, mindfulness, spiritual, etc."></textarea>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Intention</label>
+          <textarea ng-model="studentData.personal.intention" md-maxlength="300" rows="1" md-select-on-focus placeholder="What is your intention with taking yoga classes?"></textarea>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Health History</label>
+          <textarea ng-model="studentData.personal.health" rows="1" md-select-on-focus placeholder="Injuries and medical conditions (Please be specific regarding physical and mental aspects)"></textarea>
+        </md-input-container>
+
+        <div class="heading-container">
+          <h3>Join Our Community</h3>
+        </div>
+
+        <md-input-container class="md-block" flex-gt-xs>
+          <label>How did you hear about us?</label>
+          <input ng-model="studentData.community.referral">
+        </md-input-container>
+
+        <md-checkbox ng-model="studentData.community.mailing" ng-disabled="!editable" aria-label="mailing list" class="md-warn md-align-top-left" flex>Join our mailing list?<br/>
+            <span class="mailing-description">
+            Max. 2 emails/month with class information and updates. We respect your privacy and will not share your email.
+            </span>
+        </md-checkbox>
+
+      </fieldset></form>
+    </div>
+  </md-content>
+
+  <div class="edit-buttons">
+      <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
+      <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
+      <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
+      <span class="saved" ng-show="saved">Saved!</span>
+  </div>
+</div>
+</section>

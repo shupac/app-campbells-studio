@@ -1,8 +1,12 @@
-function config($stateProvider, $urlRouterProvider, $locationProvider) {
+function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationProvider) {
     'ngInject'
 
     $urlRouterProvider.otherwise('/');
     // $locationProvider.html5Mode(true);
+    $mdIconProvider
+        .icon('back', 'app/images/arrow-left.svg')
+        .icon('edit', 'app/images/pencil-box.svg')
+        .icon('save', 'app/images/content-save.svg')
 
     $stateProvider
         .state('home', {
@@ -16,13 +20,20 @@ function config($stateProvider, $urlRouterProvider, $locationProvider) {
             data: { protect: false }
         })
         .state('profile', {
-            url: '/profile/:userId',
-            params: {
-                userId: null
-            },
+            url: '/profile/:studentId',
             template: '<app-profile></app-profile>',
+            resolve:{
+               studentData: ['$stateParams', function($stateParams){
+                   return $stateParams.studentData;
+               }]
+            },
             data: { protect: true }
         })
+        .state('register', {
+            url: '/register',
+            template: '<app-register></app-register>'
+        })
+
 }
 
 export default config;

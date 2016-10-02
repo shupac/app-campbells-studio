@@ -10,6 +10,7 @@ import './main/app.styl';
 import components from './components/components';
 import home from './home/home';
 import profile from './profile/profile';
+import register from './register/register';
 
 angular.module('app',
     [
@@ -17,7 +18,8 @@ angular.module('app',
         uiRouter,
         components.name,
         home.name,
-        profile.name
+        profile.name,
+        register.name
     ])
     .factory('firebaseFactory', firebaseFactory)
     .controller('appController', appController)
