@@ -14,12 +14,20 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
           });
     
     var studentRef = firebaseFactory.db.ref('students/' + $scope.studentId);
+    var studentCheckinsRef = firebaseFactory.db.ref('checkins/' + $scope.studentId);
+    studentCheckinsRef.once('value', function(snapshot) {
+        // console.log(snapshot.val());
+        $scope.$apply(function() {
+            $scope.checkinsData = snapshot.val();
+        });
+    });
+
     if ($scope.studentId && $scope.studentData) {
-        console.log('existing data', $scope.studentData);
+        // console.log('existing data', $scope.studentData);
     } else {
         $scope.startProgress();
         studentRef.once('value', function(snapshot) {
-            console.log(snapshot.val());
+            // console.log(snapshot.val());
             $scope.$apply(function() {
                 $scope.studentData = snapshot.val();
                 $scope.stopProgress();
@@ -37,7 +45,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
 
     function recordCheckin() {
         addRemaining(-1);
-        studentRef.child('classes').child('checkins').push({
+        studentCheckinsRef.push({
             date: moment().format(),
             teacher: firebaseFactory.getUser().email
         });

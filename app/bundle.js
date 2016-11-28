@@ -90112,7 +90112,7 @@
 /* 152 */
 /***/ function(module, exports) {
 
-	module.exports = "<section id=\"profile\">\n<md-toolbar>\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>{{ studentData.first }} {{ studentData.last }}</div>\n</h2>\n\n<section id=\"classes\" layout=\"column\" md-colors=\"{background: 'blue'}\">\n  <div layout-gt-xs=\"row\" layout-align=\"center center\">\n    <div id=\"remaining\">\n      <h2>{{ studentData.classes.remaining }}</h2>passes remaining\n    </div>\n    <md-button class=\"md-primary\" md-colors=\"{background: 'yellow'}\" ng-click=\"checkIn($event)\">Check In</md-button>\n    <md-button class=\"md-primary\" md-colors=\"{background: 'amber'}\" ng-click=\"addPasses($event)\">Add Passes</md-button>\n  </div>\n\n  <h2>Recent classes</h2>\n\n  <div ng-repeat=\"checkin in studentData.classes.checkins\" layout=\"row\" layout-align=\"center\">\n    {{ checkin.date | date:'EEE, MMM d, yyyy'}} by {{ checkin.teacher }}\n  </div>\n</section>\n\n<div layout=\"row\" flex>\n  <div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n    <md-content layout-padding>\n      <div>\n        <form name=\"userForm\" ng-class=\"{editable: editable}\">\n          <div ng-include=\"'app/src/profile/contact.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/personal.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/community.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n        </form>\n      </div>\n    </md-content>\n  </div>\n</div>\n</section>\n"
+	module.exports = "<section id=\"profile\">\n<md-toolbar>\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>{{ studentData.first }} {{ studentData.last }}</div>\n</h2>\n\n<section id=\"classes\" layout=\"column\" md-colors=\"{background: 'blue'}\">\n  <div layout-gt-xs=\"row\" layout-align=\"center center\">\n    <div id=\"remaining\">\n      <h2>{{ studentData.classes.remaining }}</h2>passes remaining\n    </div>\n    <md-button class=\"md-primary\" md-colors=\"{background: 'yellow'}\" ng-click=\"checkIn($event)\">Check In</md-button>\n    <md-button class=\"md-primary\" md-colors=\"{background: 'amber'}\" ng-click=\"addPasses($event)\">Add Passes</md-button>\n  </div>\n\n  <h2>Recent classes</h2>\n\n  <div ng-repeat=\"checkin in checkinsData\" layout=\"row\" layout-align=\"center\">\n    {{ checkin.date | date:'EEE, MMM d, yyyy'}} by {{ checkin.teacher }}\n  </div>\n</section>\n\n<div layout=\"row\" flex>\n  <div layout=\"column\" ng-cloak class=\"md-inline-form profile-container\">\n    <md-content layout-padding>\n      <div>\n        <form name=\"userForm\" ng-class=\"{editable: editable}\">\n          <div ng-include=\"'app/src/profile/contact.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/personal.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n\n          <div ng-include=\"'app/src/profile/community.template.html'\"></div>\n          <div ng-include=\"'app/src/profile/edit.buttons.template.html'\"></div>\n        </form>\n      </div>\n    </md-content>\n  </div>\n</div>\n</section>\n"
 
 /***/ },
 /* 153 */
@@ -90143,18 +90143,26 @@
 	    });
 
 	    var studentRef = firebaseFactory.db.ref('students/' + $scope.studentId);
-	    if ($scope.studentId && $scope.studentData) {
-	        console.log('existing data', $scope.studentData);
-	    } else {
-	        $scope.startProgress();
-	        studentRef.once('value', function (snapshot) {
-	            console.log(snapshot.val());
-	            $scope.$apply(function () {
-	                $scope.studentData = snapshot.val();
-	                $scope.stopProgress();
-	            });
+	    var studentCheckinsRef = firebaseFactory.db.ref('checkins/' + $scope.studentId);
+	    studentCheckinsRef.once('value', function (snapshot) {
+	        // console.log(snapshot.val());
+	        $scope.$apply(function () {
+	            $scope.checkinsData = snapshot.val();
 	        });
-	    }
+	    });
+
+	    if ($scope.studentId && $scope.studentData) {
+	        // console.log('existing data', $scope.studentData);
+	    } else {
+	            $scope.startProgress();
+	            studentRef.once('value', function (snapshot) {
+	                // console.log(snapshot.val());
+	                $scope.$apply(function () {
+	                    $scope.studentData = snapshot.val();
+	                    $scope.stopProgress();
+	                });
+	            });
+	        }
 
 	    function addRemaining(numPasses) {
 	        $scope.studentData.classes.remaining += numPasses;
@@ -90165,7 +90173,7 @@
 
 	    function recordCheckin() {
 	        addRemaining(-1);
-	        studentRef.child('classes').child('checkins').push({
+	        studentCheckinsRef.push({
 	            date: (0, _moment2['default'])().format(),
 	            teacher: firebaseFactory.getUser().email
 	        });

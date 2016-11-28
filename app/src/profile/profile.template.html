@@ -22,7 +22,7 @@
 
   <h2>Recent classes</h2>
 
-  <div ng-repeat="checkin in studentData.classes.checkins" layout="row" layout-align="center">
+  <div ng-repeat="checkin in checkinsData" layout="row" layout-align="center">
     {{ checkin.date | date:'EEE, MMM d, yyyy'}} by {{ checkin.teacher }}
   </div>
 </section>
