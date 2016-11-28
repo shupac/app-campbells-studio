@@ -1,0 +1,30 @@
+<section id="reports">
+<md-toolbar id="reports">
+  <div class="md-toolbar-tools">
+    <md-button class="back-button" aria-label="Go Back" ui-sref="home">
+      <md-icon md-svg-icon="back"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+
+<h2 id="title">
+  <div>Reports</div>
+</h2>
+
+<div layout="column" ng-cloak class="md-inline-form reports-container">
+  <md-content layout-padding>
+    <div layout="row"><h3>Reporting Period</h3></div>
+    <div layout-gt-xs="row">
+      <div flex-gt-xs>
+        <h4>Start Date</h4>
+        <md-datepicker ng-model="startDate" md-placeholder="Enter date"></md-datepicker>
+      </div>
+
+      <div flex-gt-xs>
+        <h4>End Date</h4>
+        <md-datepicker ng-model="endDate" md-placeholder="Enter date"></md-datepicker>
+      </div>
+    </div>
+  </md-content>
+</div>
+</section>

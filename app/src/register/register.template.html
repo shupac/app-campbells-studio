@@ -22,11 +22,17 @@
         <div layout-gt-xs="row">
           <md-input-container class="md-block" flex-gt-xs>
             <label>First Name</label>
-            <input ng-model="studentData.first">
+            <input ng-model="studentData.first" name="firstName" required>
+            <div ng-messages="userForm.firstName.$error" ng-show="userForm.firstName.$error.required" role="alert">
+              <div ng-message="required" class="my-message" ng-show="userForm.firstName.$error.required">First name required</div>
+            </div>
           </md-input-container>
           <md-input-container class="md-block" flex-gt-xs>
             <label>Last Name</label>
-            <input ng-model="studentData.last">
+            <input ng-model="studentData.last" name="lastName" required>
+            <div ng-messages="userForm.lastName.$error" ng-show="userForm.lastName.$error.required" role="alert">
+              <div ng-message="required" class="my-message" ng-show="userForm.firstName.$error.required">Last name required</div>
+            </div>
           </md-input-container>
         </div>
 
@@ -124,7 +130,7 @@
   <div class="edit-buttons">
       <md-button class="md-raised md-primary" ng-hide="editable" ng-click="edit()" >Edit</md-button>
       <md-button class="md-primary md-hue-1 cancel" ng-show="editable" ng-click="cancel($event)">Cancel</md-button>
-      <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" >Save</md-button>
+      <md-button class="md-raised md-primary" ng-show="editable" ng-click="save()" ng-disabled="!userForm.$valid">Save</md-button>
       <span class="saved" ng-show="saved">Saved!</span>
   </div>
 </div>

@@ -36,6 +36,11 @@ function config($stateProvider, $urlRouterProvider, $mdIconProvider, $locationPr
             template: '<app-register></app-register>',
             data: { protect: false }
         })
+        .state('reports', {
+            url: '/reports',
+            template: '<app-reports></app-reports>',
+            data: { protect: true }
+        })
 }
 
 export default config;

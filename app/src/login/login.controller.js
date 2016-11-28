@@ -1,10 +1,5 @@
-function LoginController($scope, firebaseFactory) {
+function LoginController($scope, $mdDialog, firebaseFactory) {
     'ngInject'
-
-    $scope.cred = {
-        email: 'djshu.us@gmail.com',
-        password: 'forrestyoga'
-    };
 
     $scope.login = function() {
         firebaseFactory.auth($scope.cred).then(function(result) {
@@ -14,6 +9,18 @@ function LoginController($scope, firebaseFactory) {
           alert(errorMessage);
         });
     };
+
+    function alert(message) {
+      $mdDialog.show(
+        $mdDialog.alert()
+          .parent(angular.element(document.querySelector('#popupContainer')))
+          .clickOutsideToClose(true)
+          .title('Login Failed')
+          .textContent('Incorrect email/password')
+          .ariaLabel('Login Alert')
+          .ok('Try Again')
+      );
+    }
 }
 
 export default LoginController;

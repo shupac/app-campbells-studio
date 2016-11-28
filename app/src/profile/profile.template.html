@@ -11,12 +11,20 @@
   <div>{{ studentData.first }} {{ studentData.last }}</div>
 </h2>
 
-<section id="classes" layout-gt-xs="row" layout-align="center center" md-colors="{background: 'blue'}">
-  <div id="remaining">
-    <h2>{{ studentData.classes.remaining }}</h2>passes remaining
+<section id="classes" layout="column" md-colors="{background: 'blue'}">
+  <div layout-gt-xs="row" layout-align="center center">
+    <div id="remaining">
+      <h2>{{ studentData.classes.remaining }}</h2>passes remaining
+    </div>
+    <md-button class="md-primary" md-colors="{background: 'yellow'}" ng-click="checkIn($event)">Check In</md-button>
+    <md-button class="md-primary" md-colors="{background: 'amber'}" ng-click="addPasses($event)">Add Passes</md-button>
   </div>
-  <md-button class="md-primary" md-colors="{background: 'yellow'}" ng-click="checkIn($event)">Check In</md-button>
-  <md-button class="md-primary" md-colors="{background: 'amber'}" ng-click="addPasses($event)">Add Passes</md-button>
+
+  <h2>Recent classes</h2>
+
+  <div ng-repeat="checkin in studentData.classes.checkins" layout="row" layout-align="center">
+    {{ checkin.date | date:'EEE, MMM d, yyyy'}} by {{ checkin.teacher }}
+  </div>
 </section>
 
 <div layout="row" flex>

@@ -45,7 +45,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
 
     function recordPasses(numPasses) {
         numPasses = parseInt(numPasses);
-        console.log('num passes', numPasses);
+        // console.log('num passes', numPasses);
         addRemaining(numPasses);
         studentRef.child('classes').child('passes').push({
             date: moment().format(),
@@ -89,7 +89,7 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
     };
 
     $scope.save = function() {
-        console.log($scope.studentData);
+        // console.log($scope.studentData);
         $scope.startProgress();
         if ($scope.studentId) {
             studentRef.set($scope.studentData, function(err) {

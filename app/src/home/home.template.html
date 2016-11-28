@@ -1,3 +1,4 @@
+<section id="home" layout="column" md-colors="{background: 'blue'}">
 <h2 id="title">
   <div>Students</div>
 </h2>
@@ -19,6 +20,8 @@
     </md-list-item>
     <md-list-item ng-repeat="student in students | nameFilter:searchText" ng-click="viewProfile(student, $event)" class="noright">
       <p>{{ student.last }}, {{ student.first }}</p>
+      <p>{{ student.classes.remaining }}</p>
     </md-list-item>
   </md-list>
 </md-content>
+</section>
