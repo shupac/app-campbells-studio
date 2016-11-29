@@ -90510,40 +90510,99 @@
 /* 166 */
 /***/ function(module, exports) {
 
-	module.exports = "<section id=\"reports\">\n<md-toolbar id=\"reports\">\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Reports</div>\n</h2>\n\n<div layout=\"column\" ng-cloak class=\"md-inline-form reports-container\">\n  <md-content layout-padding>\n    <div layout=\"row\"><h3>Reporting Period</h3></div>\n    <div layout-gt-xs=\"row\">\n      <div flex-gt-xs>\n        <h4>Start Date</h4>\n        <md-datepicker ng-model=\"startDate\" md-placeholder=\"Enter date\"></md-datepicker>\n      </div>\n\n      <div flex-gt-xs>\n        <h4>End Date</h4>\n        <md-datepicker ng-model=\"endDate\" md-placeholder=\"Enter date\"></md-datepicker>\n      </div>\n    </div>\n  </md-content>\n</div>\n</section>\n"
+	module.exports = "<section id=\"reports\">\n<md-toolbar id=\"reports\">\n  <div class=\"md-toolbar-tools\">\n    <md-button class=\"back-button\" aria-label=\"Go Back\" ui-sref=\"home\">\n      <md-icon md-svg-icon=\"back\"></md-icon>\n    </md-button>\n  </div>\n</md-toolbar>\n\n<h2 id=\"title\">\n  <div>Reports</div>\n</h2>\n\n<md-content layout-padding class=\"reports-container\" ng-cloak>\n  <div layout-gt-xs=\"row\">\n    <div flex-gt-xs>\n      <h4>Start Date</h4>\n      <md-datepicker ng-model=\"startDate\" md-placeholder=\"Enter date\"></md-datepicker>\n    </div>\n\n    <div flex-gt-xs>\n      <h4>End Date</h4>\n      <md-datepicker ng-model=\"endDate\" md-placeholder=\"Enter date\"></md-datepicker>\n    </div>\n  </div>\n\n  <div layout-gt-xs=\"row\">\n    <div flex-gt-xs>\n      <md-input-container id=\"search\" class=\"md-block\" flex-gt-xs>\n        <md-icon md-svg-icon=\"search\"></md-icon>\n        <input ng-model=\"studentSearch\" ng-model-options=\"{ debounce: 300 }\" placeholder=\"Student\">\n      </md-input-container>\n    </div>\n\n    <div flex-gt-xs>\n      <md-input-container id=\"search\" class=\"md-block\" flex-gt-xs>\n        <md-icon md-svg-icon=\"search\"></md-icon>\n        <input ng-model=\"teacherSearch\" ng-model-options=\"{ debounce: 300 }\" placeholder=\"Teacher\">\n      </md-input-container>\n    </div>\n  </div>\n\n  <h3>\n    Total Records {{ filteredData.length }}\n  </h3>\n\n  <md-list>\n    <md-list-item>\n      <h4 flex-gt-xs>Student</h4>\n      <h4 flex-gt-xs>Class Date</h4>\n      <h4 flex-gt-xs>Teacher</h4>\n    </md-list-item>\n\n    <md-list-item ng-repeat=\"checkin in filteredData\">\n      <div flex-gt-xs>{{ checkin.name }}</div>\n      <div flex-gt-xs>{{ checkin.date | date:'EEE, MMM d, yyyy' }}</div>\n      <div flex-gt-xs>{{ checkin.teacher }}</div>\n    </md-list-item>\n  </md-list>\n</md-content>\n\n</section>\n"
 
 /***/ },
 /* 167 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	ReportsController.$inject = ["$scope", "$stateParams", "$timeout", "$mdDialog", "$state", "firebaseFactory"];
+	ReportsController.$inject = ["$scope", "studentsData", "firebaseFactory"];
 	Object.defineProperty(exports, '__esModule', {
 	    value: true
 	});
-	function ReportsController($scope, $stateParams, $timeout, $mdDialog, $state, firebaseFactory) {
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _moment = __webpack_require__(40);
+
+	var _moment2 = _interopRequireDefault(_moment);
+
+	function ReportsController($scope, studentsData, firebaseFactory) {
 	    'ngInject';
 
-	    var dataCopy;
-	    $scope.states = ('AL AK AZ AR CA CO CT DE FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS ' + 'MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI ' + 'WY').split(' ').map(function (state) {
-	        return { abbrev: state };
-	    });
-	    $scope.editable = true;
+	    $scope.checkinsData = [];
+	    $scope.studentSearch = '';
+	    $scope.teacherSearch = '';
+	    var studentNames = {};
 
-	    $scope.save = function () {
-	        $scope.startProgress();
-	        $scope.studentData.classes = {
-	            remaining: 0
-	        };
-	        var newRef = firebaseFactory.db.ref().child('students').push($scope.studentData, function (err) {
-	            $scope.$apply(function () {
-	                $scope.stopProgress();
-	                $scope.editable = false;
+	    $scope.$watch(studentsData.getStudents, function (data) {
+	        if (data) {
+	            flattenNames(data);
+	            firebaseFactory.db.ref('checkins').once('value', function (snapshot) {
+	                $scope.$apply(function () {
+	                    flattenData(snapshot.val());
+	                });
 	            });
-	            if (err) console.log(err);
-	            $state.go('profile', { studentId: newRef.key });
+	        }
+	    });
+
+	    $scope.$watch('studentSearch', filterCheckins);
+	    $scope.$watch('teacherSearch', filterCheckins);
+	    $scope.$watch('startDate', filterCheckins);
+	    $scope.$watch('endDate', filterCheckins);
+
+	    function flattenNames(data) {
+	        data.forEach(function (studentData) {
+	            studentNames[studentData.id] = studentData.last + ', ' + studentData.first;
 	        });
+	    }
+
+	    function flattenData(checkinsData) {
+	        for (var uid in checkinsData) {
+	            var name = studentNames[uid];
+	            var checkins = checkinsData[uid];
+	            for (var id in checkins) {
+	                var checkin = checkins[id];
+	                $scope.checkinsData.push({
+	                    name: name,
+	                    date: checkin.date,
+	                    teacher: checkin.teacher
+	                });
+	            }
+	        }
+	        sortData();
+	        console.log($scope.checkinsData.length);
+	    }
+
+	    function sortData() {
+	        $scope.checkinsData = $scope.checkinsData.sort(function (a, b) {
+	            if ((0, _moment2['default'])(a.date).isAfter(b.date)) return -1;
+	            return 1;
+	        });
+	        $scope.filteredData = $scope.checkinsData;
+	    }
+
+	    function filterCheckins() {
+	        var studentSearch = $scope.studentSearch.toLowerCase();
+	        var teacherSearch = $scope.teacherSearch.toLowerCase();
+	        if (!$scope.checkinsData.length) return;
+	        var results = $scope.checkinsData.filter(function (checkin) {
+	            var name = checkin.name.toLowerCase();
+	            var teacher = checkin.teacher.toLowerCase();
+	            var date = (0, _moment2['default'])(checkin.date);
+	            var filterStartDate = $scope.startDate ? date.isAfter((0, _moment2['default'])($scope.startDate).subtract(1, 'd')) : true;
+	            var filterEndDate = $scope.endDate ? date.isSameOrBefore((0, _moment2['default'])($scope.endDate).add(1, 'd')) : true;
+	            console.log(filterStartDate, filterEndDate);
+	            return name.indexOf(studentSearch) > -1 && teacher.indexOf(teacherSearch) > -1 && filterStartDate && filterEndDate;
+	        });
+	        $scope.filteredData = results;
+	    }
+
+	    $scope.generateReport = function () {
+	        console.log($scope.startDate, $scope.endDate);
+	        console.log($scope.data);
 	    };
 	}
 
@@ -90585,7 +90644,7 @@
 
 
 	// module
-	exports.push([module.id, "h2#title {\n  position: fixed;\n  width: 100%;\n  text-align: center;\n  color: rgba(255,255,255,0.87);\n  z-index: 5;\n  font-family: Roboto, Helvetica Neue, sans-serif;\n  font-weight: 400;\n  pointer-events: none;\n}\n@media (min-width: 655px) and (max-width: 960px) {\n  h2#title {\n    top: -10px;\n  }\n}\n@media (min-width: 400px) and (max-width: 655px) {\n  h2#title {\n    top: -5px;\n  }\n}\n@media (max-width: 400px) {\n  h2#title {\n    font-size: 16px;\n    top: 6px;\n  }\n}\nmd-toolbar {\n  position: fixed;\n}\n.reports-container {\n  max-width: 800px;\n  margin: 0 auto;\n  text-align: left;\n  padding: 40px 0;\n}\n.heading-container {\n  text-align: center;\n  margin-bottom: 20px;\n}\ninput,\nmd-select span {\n  color: #000 !important;\n}\n.editable input,\n.editable md-select span {\n  color: #00f !important;\n}\nmd-input-container {\n  margin: 0;\n}\nfieldset {\n  margin: 0;\n  padding: 0;\n}\n#reports .edit-buttons {\n  margin-top: 30px;\n  text-align: right;\n}\n#confidentiality {\n  position: relative;\n  top: -15px;\n}\n.mailing-description {\n  color: rgba(0,0,0,0.38);\n}\n", ""]);
+	exports.push([module.id, ".reports-container {\n  max-width: 800px;\n  margin: 0 auto;\n  text-align: left;\n  padding: 40px 0;\n}\n", ""]);
 
 	// exports
 
