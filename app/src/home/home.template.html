@@ -6,7 +6,33 @@
 <md-toolbar class="md-theme-indigo">
   <div layout="row" layout-align="right center">
     <h1 class="md-toolbar-tools"></h1>
-    <ng-include src="'app/src/home/menu.template.html'"></ng-include>
+    <!-- <ng-include src="'app/src/home/menu.template.html'"></ng-include> -->
+
+    <div class="menu-demo-container" layout-align="center center" layout="column">
+      <md-menu id="menu-toggle" md-position-mode="target-right target">
+        <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+          <md-icon md-menu-origin md-svg-icon="menu"></md-icon>
+        </md-button>
+
+        <md-menu-content width="3">
+          <md-menu-item>
+            <md-button ui-sref="register">Register Student</md-button>
+          </md-menu-item>
+
+          <md-menu-item>
+            <md-button ui-sref="reports">Generate Reports</md-button>
+          </md-menu-item>
+
+          <md-menu-divider></md-menu-divider>
+
+          <md-menu-item>
+            <md-button ng-click="logout()">Logout</md-button>
+          </md-menu-item>
+
+        </md-menu-content>
+      </md-menu>
+    </div>
+
   </div>
 </md-toolbar>
 

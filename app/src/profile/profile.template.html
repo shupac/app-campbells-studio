@@ -25,6 +25,12 @@
   <div ng-repeat="checkin in checkinsData" layout="row" layout-align="center">
     {{ checkin.date | date:'EEE, MMM d, yyyy'}} by {{ checkin.teacher }}
   </div>
+
+  <h2>Class Passes Added</h2>
+
+  <div ng-repeat="pass in passData" layout="row" layout-align="center">
+    {{ pass.quantity }} passes added on {{ pass.date | date:'EEE, MMM d, yyyy'}} by {{ pass.teacher }}
+  </div>
 </section>
 
 <div layout="row" flex>

@@ -15,6 +15,26 @@ function ProfileController($scope, $stateParams, $timeout, $mdDialog, $mdSidenav
     
     var studentRef = firebaseFactory.db.ref('students/' + $scope.studentId);
     var studentCheckinsRef = firebaseFactory.db.ref('checkins/' + $scope.studentId);
+
+    studentCheckinsRef.once('value', function(snapshot) {
+        // console.log(snapshot.val());
+        $scope.$apply(function() {
+            $scope.checkinsData = snapshot.val();
+        });
+    });
+
+    studentRef.child('classes').child('passes').once('value', function(snapshot) {
+        $scope.$apply(function() {
+            const passData = [];
+            snapshot.forEach(function(childSnapshot) {
+                passData.push(childSnapshot.val());
+                console.log(childSnapshot.val());
+            });
+
+            $scope.passData = passData;
+        });
+    });
+
     studentCheckinsRef.once('value', function(snapshot) {
         // console.log(snapshot.val());
         $scope.$apply(function() {

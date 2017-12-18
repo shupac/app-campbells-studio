@@ -14,10 +14,11 @@
     "gulp": "^3.9.0",
     "ng-annotate-loader": "0.0.10",
     "raw-loader": "^0.5.1",
-    "require-dir": "^0.3.0",
+    "require-dir": "^0.3.2",
     "script-loader": "^0.6.1",
     "style-loader": "^0.12.3",
-    "stylus-loader": "^1.2.1",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.3.1",
     "webpack": "^1.10.1",
     "webpack-stream": "^3.1.0"
   },
